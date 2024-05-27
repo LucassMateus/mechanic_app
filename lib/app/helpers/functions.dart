@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:mechanic_app/app/core/models/car_model.dart';
-import 'package:mechanic_app/app/modules/service_order/home/domain/models/service_order.dart';
+import 'package:mechanic_app/app/modules/service_order/domain/models/service_order.dart';
 
 List<ServiceOrderModel> generateServiceOrders(int quantity) {
   final List<ServiceOrderModel> serviceOrders = [];
