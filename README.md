@@ -1,1 +1,0 @@
-# mechanic_app
