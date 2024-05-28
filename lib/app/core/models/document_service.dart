@@ -1,4 +1,4 @@
-import 'package:mechanic_app/app/core/models/car_model.dart';
+import 'package:mechanic_app/app/modules/registration/cars/domain/models/car_model.dart';
 import 'package:mechanic_app/app/modules/registration/items/domain/models/item_model.dart';
 import 'package:mechanic_app/app/modules/registration/services/domain/models/service_model.dart';
 

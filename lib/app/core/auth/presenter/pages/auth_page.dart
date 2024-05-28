@@ -35,7 +35,7 @@ class _AuthPageState extends State<AuthPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const MechanicAppLogo(),
+                      const MechanicAppLogo(height: 150),
                       const SizedBox(height: 20),
                       Form(
                         key: formKey,

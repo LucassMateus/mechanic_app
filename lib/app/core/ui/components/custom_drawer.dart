@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mechanic_app/app/core/ui/components/mechanic_app_logo.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -10,50 +11,48 @@ class CustomDrawer extends StatelessWidget {
     final ColorScheme colorScheme = theme.colorScheme;
 
     return NavigationDrawer(
+      onDestinationSelected: (index) {
+        debugPrint(index.toString());
+        switch(index) {
+          case 2:
+          Modular.to.navigate('/items');
+        }
+      },
       children: [
-        SingleChildScrollView(
-          child: SizedBox(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                drawerHeader(colorScheme.primary),
-                NavigationDrawerDestination(
-                  icon: const Icon(Icons.home),
-                  label: Text(
-                    'Home',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                ),
-                NavigationDrawerDestination(
-                  icon: const Icon(Icons.home),
-                  label: Text(
-                    'Serviços',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                ),
-                NavigationDrawerDestination(
-                  icon: const Icon(Icons.home),
-                  label: Text(
-                    'Cadastro',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                ),
-                NavigationDrawerDestination(
-                  icon: const Icon(Icons.home),
-                  label: Text(
-                    'Gerencial',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                ),
-                NavigationDrawerDestination(
-                  icon: const Icon(Icons.home),
-                  label: Text(
-                    'Agenda',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                ),
-              ],
-            ),
+        drawerHeader(colorScheme.primary),
+        NavigationDrawerDestination(
+          icon: const Icon(Icons.home_outlined),
+          label: Text(
+            'Home',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ),
+        NavigationDrawerDestination(
+          icon: const Icon(Icons.construction_outlined),
+          label: Text(
+            'Serviços',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ),
+        NavigationDrawerDestination(
+          icon: const Icon(Icons.assignment_outlined),
+          label: Text(
+            'Cadastro',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ),
+        NavigationDrawerDestination(
+          icon: const Icon(Icons.business_center_outlined),
+          label: Text(
+            'Gerencial',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ),
+        NavigationDrawerDestination(
+          icon: const Icon(Icons.calendar_month_outlined),
+          label: Text(
+            'Agenda',
+            style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
       ],
@@ -68,7 +67,7 @@ Widget drawerHeader(Color color) {
       color: color,
     ),
     child: const Center(
-      child: MechanicAppLogo(),
+      child: MechanicAppLogo(height: 80),
     ),
   );
 }

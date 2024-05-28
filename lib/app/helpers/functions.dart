@@ -1,6 +1,7 @@
 import 'dart:math';
 
-import 'package:mechanic_app/app/core/models/car_model.dart';
+import 'package:mechanic_app/app/modules/registration/cars/domain/models/car_model.dart';
+import 'package:mechanic_app/app/modules/registration/items/domain/models/item_model.dart';
 import 'package:mechanic_app/app/modules/service_order/domain/models/service_order.dart';
 
 List<ServiceOrderModel> generateServiceOrders(int quantity) {
@@ -53,4 +54,22 @@ CarModel generateRandomCar() {
     brand: randomBrand,
     year: year,
   );
+}
+
+List<ItemModel> generateItems() {
+  final newItems = [
+    ItemModel(code: 1, description: 'Item 1', cost: 10.0),
+    ItemModel(code: 2, description: 'Item 2', cost: 20.0),
+    ItemModel(code: 3, description: 'Item 3', cost: 20.0),
+    ItemModel(code: 12, description: 'Item 12', cost: 20.0),
+    ItemModel(code: 23, description: 'Item 23', cost: 20.0),
+    ItemModel(code: 1, description: 'Item 1', cost: 10.0),
+    ItemModel(code: 2, description: 'Item 2', cost: 20.0),
+    ItemModel(code: 3, description: 'Item 3', cost: 20.0),
+    ItemModel(code: 12, description: 'Item 12', cost: 20.0),
+    ItemModel(code: 23, description: 'Item 23', cost: 20.0),
+    
+  ];
+
+  return newItems;
 }
