@@ -4,6 +4,7 @@ class RegistrationCardWidget extends StatelessWidget {
   const RegistrationCardWidget({
     required this.title,
     required this.subTitle,
+    this.leading,
     this.onEdit,
     this.onRemove,
     this.color,
@@ -12,6 +13,7 @@ class RegistrationCardWidget extends StatelessWidget {
 
   final String title;
   final String subTitle;
+  final Widget? leading;
   final Color? color;
   final void Function()? onEdit;
   final void Function()? onRemove;
@@ -26,6 +28,7 @@ class RegistrationCardWidget extends StatelessWidget {
         padding: const EdgeInsets.all(4),
         child: Row(
           children: [
+            leading ?? const SizedBox(),
             Expanded(
               child: ListTile(
                 title: Text(title),

@@ -5,23 +5,26 @@ import 'package:mechanic_app/app/core/ui/components/custom_search_widget.dart';
 import 'package:mechanic_app/app/core/ui/components/custom_text_field.dart';
 import 'package:mechanic_app/app/core/ui/components/full_dialog_widget.dart';
 import 'package:mechanic_app/app/core/ui/components/registration_card_widget.dart';
-import 'package:mechanic_app/app/modules/registration/items/domain/models/item_model.dart';
-import 'package:mechanic_app/app/modules/registration/items/presenter/controllers/items_registration_controller.dart';
+import 'package:mechanic_app/app/modules/registration/services/domain/models/service_model.dart';
+import 'package:mechanic_app/app/modules/registration/services/presenter/controllers/services_registration_controller.dart';
 
-class ItemsRegistrationPage extends StatefulWidget {
-  ItemsRegistrationPage({super.key});
-  final ItemsRegistrationController controller = ItemsRegistrationController();
+class ServicesRegistrationPage extends StatefulWidget {
+
+  ServicesRegistrationPage({ super.key });
+
+  final controller = ServicesRegistrationController();
 
   @override
-  State<ItemsRegistrationPage> createState() => _ItemsRegistrationPageState();
+  State<ServicesRegistrationPage> createState() => _ServicesRegistrationPageState();
 }
 
-class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
-  ItemsRegistrationController get controller => widget.controller;
+class _ServicesRegistrationPageState extends State<ServicesRegistrationPage> {
+   @override
+   ServicesRegistrationController get controller => widget.controller;
 
   @override
   void initState() {
-    controller.setItems();
+    controller.generateServices();
     super.initState();
   }
 
@@ -32,7 +35,7 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Itens'),
+        title: const Text('Serviços'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -40,7 +43,7 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
               showDialog(
                 context: context,
                 builder: (context) => FullDialogWidget(
-                  title: 'Novo Item',
+                  title: 'Novo Serviço',
                   onConfirmText: 'Salvar',
                   onCancelText: 'Cancelar',
                   onConfirmPressed: () {},
@@ -48,9 +51,11 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
                   builder: (context) {
                     return const Column(
                       children: [
-                        CustomTextFormField(label: 'Codigo'),
+                        CustomTextFormField(label: 'Nome'),
                         CustomTextFormField(label: 'Descrição'),
-                        CustomTextFormField(label: 'Custo'),
+                        CustomTextFormField(label: 'Total de horas'),
+                        CustomTextFormField(label: 'Items'),
+                        CustomTextFormField(label: 'Preço por carro'),
                       ],
                     );
                   },
@@ -72,7 +77,7 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
             CustomSearchWidget(
               label: 'Digite para pesquisar...',
               color: colorScheme.outlineVariant,
-              onChanged: controller.filterItems,
+              // onChanged: controller.filterItems,
             ),
             const SizedBox(height: 8),
             Expanded(
@@ -80,14 +85,14 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
                 valueListenable: controller,
                 builder: (_, state, child) {
                   return switch (state) {
-                    SuccessState(:final List<ItemModel> data) =>
+                    SuccessState(:final List<ServiceModel> data) =>
                       ListView.builder(
                         itemCount: data.length,
                         itemBuilder: (context, index) {
-                          final item = data[index];
+                          final service = data[index];
                           return RegistrationCardWidget(
-                            title: item.code.toString(),
-                            subTitle: item.description,
+                            title: service.name,
+                            subTitle: service.description,
                             color: colorScheme.outlineVariant,
                             // onRemove: controller.remove(item),
                           );

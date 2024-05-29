@@ -42,15 +42,17 @@ class FullDialogWidget extends StatelessWidget {
                   },
                   icon: Icon(
                     Icons.close,
-                    size: 32,
+                    size: 28,
                     color: colorScheme.error,
                   ),
                 ),
               ],
             ),
+            const Divider(),
             const SizedBox(height: 8),
             builder(context),
             const Spacer(),
+            const Divider(),
             Row(
               children: [
                 TextButton(

@@ -41,12 +41,12 @@ class _AuthPageState extends State<AuthPage> {
                         key: formKey,
                         child: Column(
                           children: [
-                            CustomTextField(
+                            CustomTextFormField(
                               label: 'Usuario',
                               controller: userEC,
                             ),
                             const SizedBox(height: 20),
-                            CustomTextField(
+                            CustomTextFormField(
                               label: 'Senha',
                               controller: passwordEC,
                             ),

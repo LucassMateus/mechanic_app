@@ -18,7 +18,7 @@ class CustomSearchWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      height: 50,
+      height: 60,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(32),
@@ -34,10 +34,7 @@ class CustomSearchWidget extends StatelessWidget {
               onChanged: onChanged,
             ),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search_outlined),
-          ),
+          const Icon(Icons.search_outlined),
           Visibility(
             visible: actions.isNotEmpty,
             child: PopupMenuButton(

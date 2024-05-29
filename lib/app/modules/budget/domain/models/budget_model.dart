@@ -2,6 +2,7 @@ import 'package:mechanic_app/app/core/models/document_service.dart';
 
 class BudgetModel extends DocumentService {
   BudgetModel({
+    required this.id,
     required super.clientName,
     required super.car,
     required super.date,
@@ -11,6 +12,8 @@ class BudgetModel extends DocumentService {
     required super.observations,
     required super.status,
   });
+
+  final int id;
 
   @override
   double getValor() {

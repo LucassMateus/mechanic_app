@@ -20,15 +20,15 @@ class NewBudgetPage extends StatelessWidget {
       builder: (context) {
         return const Column(
           children: [
-            CustomTextField(label: 'Cliente'),
-            CustomTextField(label: 'Carro'),
-            CustomTextField(label: 'Placa'),
-            CustomTextField(label: 'Data'),
-            CustomTextField(label: 'Serviços'),
-            CustomTextField(label: 'Itens Adicionais'),
-            CustomTextField(label: 'Horas Adicionais'),
-            CustomTextField(label: 'Observações'),
-            CustomTextField(label: 'Status'),
+            CustomTextFormField(label: 'Cliente'),
+            CustomTextFormField(label: 'Carro'),
+            CustomTextFormField(label: 'Placa'),
+            CustomTextFormField(label: 'Data'),
+            CustomTextFormField(label: 'Serviços'),
+            CustomTextFormField(label: 'Itens Adicionais'),
+            CustomTextFormField(label: 'Horas Adicionais'),
+            CustomTextFormField(label: 'Observações'),
+            CustomTextFormField(label: 'Status'),
           ],
         );
       },

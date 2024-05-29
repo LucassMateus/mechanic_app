@@ -11,15 +11,25 @@ class CustomDrawer extends StatelessWidget {
     final ColorScheme colorScheme = theme.colorScheme;
 
     return NavigationDrawer(
+      selectedIndex: 1,
       onDestinationSelected: (index) {
-        debugPrint(index.toString());
-        switch(index) {
+        switch (index) {
+          case 0:
+            Modular.to.navigate('/home');
+          case 1:
+            Modular.to.navigate('/budgets');
           case 2:
-          Modular.to.navigate('/items');
+            Modular.to.navigate('/items');
+          case 3:
+            Modular.to.navigate('/services');
         }
       },
       children: [
         drawerHeader(colorScheme.primary),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          child: Text('Geral'),
+        ),
         NavigationDrawerDestination(
           icon: const Icon(Icons.home_outlined),
           label: Text(
@@ -28,20 +38,54 @@ class CustomDrawer extends StatelessWidget {
           ),
         ),
         NavigationDrawerDestination(
-          icon: const Icon(Icons.construction_outlined),
+          icon: const Icon(Icons.receipt_long_outlined),
           label: Text(
-            'Serviços',
+            'Orçamentos',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ),
+        const Divider(),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          child: Text('Cadastro'),
+        ),
+        NavigationDrawerDestination(
+          icon: const Icon(Icons.settings_outlined),
+          label: Text(
+            'Itens',
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
         NavigationDrawerDestination(
           icon: const Icon(Icons.assignment_outlined),
           label: Text(
-            'Cadastro',
+            'Serviços',
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
         NavigationDrawerDestination(
+          enabled: false,
+          icon: const Icon(Icons.directions_car_filled_outlined),
+          label: Text(
+            'Carros',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ),
+        NavigationDrawerDestination(
+          enabled: false,
+          icon: const Icon(Icons.person_2_outlined),
+          label: Text(
+            'Clientes',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ),
+        const Divider(),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          child: Text('Gerencial'),
+        ),
+        NavigationDrawerDestination(
+          enabled: false,
           icon: const Icon(Icons.business_center_outlined),
           label: Text(
             'Gerencial',
@@ -49,12 +93,34 @@ class CustomDrawer extends StatelessWidget {
           ),
         ),
         NavigationDrawerDestination(
+          enabled: false,
           icon: const Icon(Icons.calendar_month_outlined),
           label: Text(
             'Agenda',
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
+        SizedBox(
+          width: 50,
+          child: TextButton.icon(
+            onPressed: () {},
+            label: SizedBox(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.logout_outlined),
+                    Text(
+                      'Sair',
+                      style: TextStyle(color: colorScheme.primary),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        )
       ],
     );
   }
@@ -62,8 +128,9 @@ class CustomDrawer extends StatelessWidget {
 
 Widget drawerHeader(Color color) {
   return Container(
-    height: 200,
+    height: 150,
     decoration: BoxDecoration(
+      // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
       color: color,
     ),
     child: const Center(
