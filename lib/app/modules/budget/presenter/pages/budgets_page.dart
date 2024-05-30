@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mechanic_app/app/core/state/base_state.dart';
 import 'package:mechanic_app/app/core/ui/components/custom_drawer.dart';
 import 'package:mechanic_app/app/core/ui/components/custom_search_widget.dart';
-import 'package:mechanic_app/app/core/ui/components/custom_text_field.dart';
-import 'package:mechanic_app/app/core/ui/components/full_dialog_widget.dart';
 import 'package:mechanic_app/app/core/ui/components/registration_card_widget.dart';
 import 'package:mechanic_app/app/core/ui/pages/new_budget_page.dart';
 import 'package:mechanic_app/app/modules/budget/domain/models/budget_model.dart';
 import 'package:mechanic_app/app/modules/budget/presenter/controllers/budgets_controller.dart';
+
+import '../../../../core/models/document_service.dart';
 
 class BudgetsPage extends StatefulWidget {
   BudgetsPage({super.key});
@@ -40,7 +40,11 @@ class _BudgetsPageState extends State<BudgetsPage> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (context) => const NewBudgetPage(),
+                builder: (context) => const BudgetDialog(
+                  title: 'Novo Orçamento',
+                  onConfirmText: 'Salvar',
+                  onCancelText: 'Cancelar',
+                ),
               );
             },
             icon: const Icon(
@@ -58,7 +62,50 @@ class _BudgetsPageState extends State<BudgetsPage> {
             CustomSearchWidget(
               label: 'Digite para pesquisar...',
               color: colorScheme.outlineVariant,
-              // onChanged: controller.filterItems,
+              onChanged: controller.filterBySearchText,
+              actions: [
+                PopupMenuItem<String>(
+                  value: DocumentStatus.approved.name,
+                  child: Row(
+                    children: [
+                      DocumentStatus.approved.icon,
+                      const SizedBox(width: 8),
+                      Text(DocumentStatus.approved.name),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: DocumentStatus.scheduled.name,
+                  child: Row(
+                    children: [
+                      DocumentStatus.scheduled.icon,
+                      const SizedBox(width: 8),
+                      Text(DocumentStatus.scheduled.name),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: DocumentStatus.pending.name,
+                  child: Row(
+                    children: [
+                      DocumentStatus.pending.icon,
+                      const SizedBox(width: 8),
+                      Text(DocumentStatus.pending.name),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'Todos',
+                  child: Row(
+                    children: [
+                      Icon(Icons.format_align_justify_outlined),
+                      SizedBox(width: 8),
+                      Text('Todos'),
+                    ],
+                  ),
+                ),
+              ],
+              onSelectedAction: (value) => controller.filterByStatus(value),
             ),
             const SizedBox(height: 8),
             Expanded(
@@ -84,7 +131,18 @@ class _BudgetsPageState extends State<BudgetsPage> {
                                 ],
                               ),
                             ),
-                            // onRemove: controller.remove(item),
+                            onRemove: () => controller.removeBudget(budget),
+                            onEdit: () => showDialog(
+                              context: context,
+                              builder: (context) {
+                                return BudgetDialog(
+                                  title: 'Orçamento: ${budget.id}',
+                                  onConfirmText: 'Atualizar',
+                                  onCancelText: 'Cancelar',
+                                  showStatus: true,
+                                );
+                              },
+                            ),
                           );
                         },
                       ),

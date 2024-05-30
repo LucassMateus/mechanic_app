@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mechanic_app/app/core/controllers/custom_drawer_controller.dart';
 import 'package:mechanic_app/app/core/ui/components/mechanic_app_logo.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
+
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
+  final controller = Modular.get<CustomDrawerController>();
 
   @override
   Widget build(BuildContext context) {
@@ -11,21 +19,13 @@ class CustomDrawer extends StatelessWidget {
     final ColorScheme colorScheme = theme.colorScheme;
 
     return NavigationDrawer(
-      selectedIndex: 1,
+      selectedIndex: controller.selectedIndex,
       onDestinationSelected: (index) {
-        switch (index) {
-          case 0:
-            Modular.to.navigate('/home');
-          case 1:
-            Modular.to.navigate('/budgets');
-          case 2:
-            Modular.to.navigate('/items');
-          case 3:
-            Modular.to.navigate('/services');
-        }
+        controller.updateSelectedAndNavigateToPage(index);
+        setState(() {});
       },
       children: [
-        drawerHeader(colorScheme.primary),
+        // drawerHeader(colorScheme.primary),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
           child: Text('Geral'),
@@ -44,6 +44,13 @@ class CustomDrawer extends StatelessWidget {
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
+        NavigationDrawerDestination(
+          icon: const Icon(Icons.assignment_outlined),
+          label: Text(
+            'Ordens de Serviço',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ),
         const Divider(),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
@@ -57,7 +64,7 @@ class CustomDrawer extends StatelessWidget {
           ),
         ),
         NavigationDrawerDestination(
-          icon: const Icon(Icons.assignment_outlined),
+          icon: const Icon(Icons.build_outlined),
           label: Text(
             'Serviços',
             style: Theme.of(context).textTheme.titleSmall,
@@ -100,6 +107,7 @@ class CustomDrawer extends StatelessWidget {
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
+        const Divider(),
         SizedBox(
           width: 50,
           child: TextButton.icon(

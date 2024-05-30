@@ -1,78 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:mechanic_app/app/core/models/document_service.dart';
 import 'package:mechanic_app/app/core/state/base_state.dart';
 import 'package:mechanic_app/app/core/ui/components/custom_drawer.dart';
-import 'package:mechanic_app/app/core/ui/components/custom_search_widget.dart';
 import 'package:mechanic_app/app/core/ui/components/custom_text_field.dart';
 import 'package:mechanic_app/app/core/ui/components/full_dialog_widget.dart';
 import 'package:mechanic_app/app/core/ui/components/registration_card_widget.dart';
-import 'package:mechanic_app/app/modules/registration/items/domain/models/item_model.dart';
-import 'package:mechanic_app/app/modules/registration/items/presenter/controllers/items_registration_controller.dart';
+import 'package:mechanic_app/app/modules/service_order/domain/models/service_order.dart';
+import 'package:mechanic_app/app/modules/service_order/presenter/controllers/service_orders_controller.dart';
 
-class ItemsRegistrationPage extends StatefulWidget {
-  ItemsRegistrationPage({super.key});
-  final ItemsRegistrationController controller = ItemsRegistrationController();
+class ServiceOrdersPage extends StatefulWidget {
+  ServiceOrdersPage({super.key});
+  final ServiceOrdersController controller = ServiceOrdersController();
 
   @override
-  State<ItemsRegistrationPage> createState() => _ItemsRegistrationPageState();
+  State<ServiceOrdersPage> createState() => _ServiceOrdersPageState();
 }
 
-class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
-  ItemsRegistrationController get controller => widget.controller;
+class _ServiceOrdersPageState extends State<ServiceOrdersPage> {
+  ServiceOrdersController get controller => widget.controller;
+  DocumentStatus selectedStatus = DocumentStatus.approved;
 
   @override
   void initState() {
-    controller.setItems();
+    controller.getServiceOrders();
+    controller.filterByStatus(selectedStatus.name);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
+    // final ThemeData theme = Theme.of(context);
+    // final ColorScheme colorScheme = theme.colorScheme;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Itens'),
+        title: const Text('Ordens de Serviço'),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => FullDialogWidget(
-                  title: 'Novo Item',
-                  onConfirmText: 'Salvar',
-                  onCancelText: 'Cancelar',
-                  onConfirmPressed: () {},
-                  onCancelPressed: () {},
-                  builder: (context) {
-                    return const Column(
-                      children: [
-                        CustomTextFormField(label: 'Codigo'),
-                        CustomTextFormField(label: 'Descrição'),
-                        CustomTextFormField(label: 'Custo'),
-                      ],
-                    );
-                  },
-                ),
-              );
-            },
-            icon: const Icon(
-              Icons.add_outlined,
-              size: 28,
-            ),
-          )
-        ],
       ),
       drawer: const CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Column(
           children: [
-            CustomSearchWidget(
-              label: 'Digite para pesquisar...',
-              color: colorScheme.outlineVariant,
-              onChanged: controller.filterItems,
+            SegmentedButton<DocumentStatus>(
+              segments: DocumentStatus.values
+                  .map((status) => ButtonSegment<DocumentStatus>(
+                        value: status,
+                        label: Text(status.name),
+                      ))
+                  .toList(),
+              selected: {selectedStatus},
+              onSelectionChanged: (newSelection) {
+                setState(() {
+                  selectedStatus = newSelection.first;
+                });
+                controller.filterByStatus(selectedStatus.name);
+              },
             ),
             const SizedBox(height: 8),
             Expanded(
@@ -80,24 +63,34 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
                 valueListenable: controller,
                 builder: (_, state, child) {
                   return switch (state) {
-                    SuccessState(:final List<ItemModel> data) =>
+                    SuccessState(:final List<ServiceOrderModel> data) =>
                       ListView.builder(
                         itemCount: data.length,
                         itemBuilder: (context, index) {
-                          final item = data[index];
+                          final serviceOrder = data[index];
                           return RegistrationCardWidget(
-                            title: item.code.toString(),
-                            subTitle: item.description,
-                            color: colorScheme.outlineVariant,
-                            onRemove: () => controller.remove(item),
+                            title: '123',
+                            subTitle: serviceOrder.car.model,
+                            color: serviceOrder.status.color,
+                            leading: Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Column(
+                                children: [
+                                  serviceOrder.status.icon,
+                                  Text(serviceOrder.status.name),
+                                ],
+                              ),
+                            ),
+                            // onRemove: () => controller.remove(item),
                             onEdit: () => showDialog(
                               context: context,
                               builder: (context) => FullDialogWidget(
-                                title: 'Item: ${item.code}',
+                                title: 'Ordem: 123',
                                 onConfirmText: 'Atualizar',
                                 onCancelText: 'Cancelar',
                                 onConfirmPressed: () {},
-                                onCancelPressed: () => Navigator.of(context).pop(),
+                                onCancelPressed: () =>
+                                    Navigator.of(context).pop(),
                                 builder: (context) {
                                   return const Column(
                                     children: [

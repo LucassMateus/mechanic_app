@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mechanic_app/app/core/state/base_state.dart';
 import 'package:mechanic_app/app/core/ui/alerts/alerts.dart';
 import 'package:mechanic_app/app/core/ui/components/custom_drawer.dart';
@@ -163,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                     Align(
                       alignment: Alignment.bottomRight,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () => Modular.to.navigate('/service-orders'),
                         child: const Text('Ver Mais'),
                       ),
                     ),
@@ -186,9 +187,11 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) {
-                    return const NewBudgetPage();
-                  },
+                  builder: (context) => const BudgetDialog(
+                    title: 'Novo Orçamento',
+                    onConfirmText: 'Salvar',
+                    onCancelText: 'Cancelar',
+                  ),
                 );
               },
               child: Text(

@@ -4,15 +4,17 @@ class CustomSearchWidget extends StatelessWidget {
   const CustomSearchWidget({
     required this.label,
     this.color,
-    this.actions = const [],
     this.onChanged,
+    this.actions = const [],
+    this.onSelectedAction,
     super.key,
   });
 
   final String label;
   final Color? color;
-  final List<PopupMenuEntry<Object?>> actions;
   final void Function(String)? onChanged;
+  final List<PopupMenuEntry<String?>> actions;
+  final void Function(String?)? onSelectedAction;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +40,10 @@ class CustomSearchWidget extends StatelessWidget {
           Visibility(
             visible: actions.isNotEmpty,
             child: PopupMenuButton(
-              itemBuilder: (context) => [],
+              onSelected: onSelectedAction,
+              itemBuilder: (context) => actions,
             ),
-          )
+          ),
         ],
       ),
     );

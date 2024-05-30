@@ -6,6 +6,7 @@ import 'package:mechanic_app/app/modules/budget/budget_module.dart';
 import 'package:mechanic_app/app/modules/home/home_module.dart';
 import 'package:mechanic_app/app/modules/registration/items/items_module.dart';
 import 'package:mechanic_app/app/modules/registration/services/services_module.dart';
+import 'package:mechanic_app/app/modules/service_order/service_orders_module.dart';
 
 class AppModule extends Module {
   @override
@@ -19,6 +20,7 @@ class AppModule extends Module {
     r.module('/budgets', module: BudgetModule());
     r.module('/items', module: ItemsModule());
     r.module('/services', module: ServicesModule());
+    r.module('/service-orders', module: ServiceOrdersModule());
     super.routes(r);
   }
 }

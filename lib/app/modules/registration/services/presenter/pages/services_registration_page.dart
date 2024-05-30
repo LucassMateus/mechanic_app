@@ -9,18 +9,18 @@ import 'package:mechanic_app/app/modules/registration/services/domain/models/ser
 import 'package:mechanic_app/app/modules/registration/services/presenter/controllers/services_registration_controller.dart';
 
 class ServicesRegistrationPage extends StatefulWidget {
-
-  ServicesRegistrationPage({ super.key });
+  ServicesRegistrationPage({super.key});
 
   final controller = ServicesRegistrationController();
 
   @override
-  State<ServicesRegistrationPage> createState() => _ServicesRegistrationPageState();
+  State<ServicesRegistrationPage> createState() =>
+      _ServicesRegistrationPageState();
 }
 
 class _ServicesRegistrationPageState extends State<ServicesRegistrationPage> {
-   @override
-   ServicesRegistrationController get controller => widget.controller;
+
+  ServicesRegistrationController get controller => widget.controller;
 
   @override
   void initState() {
@@ -95,6 +95,32 @@ class _ServicesRegistrationPageState extends State<ServicesRegistrationPage> {
                             subTitle: service.description,
                             color: colorScheme.outlineVariant,
                             // onRemove: controller.remove(item),
+                            onEdit: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => FullDialogWidget(
+                                  title: 'Serviço: ${service.name}',
+                                  onConfirmText: 'Atualizar',
+                                  onCancelText: 'Cancelar',
+                                  onConfirmPressed: () {},
+                                  onCancelPressed: () =>
+                                      Navigator.of(context).pop(service),
+                                  builder: (context) {
+                                    return const Column(
+                                      children: [
+                                        CustomTextFormField(label: 'Nome'),
+                                        CustomTextFormField(label: 'Descrição'),
+                                        CustomTextFormField(
+                                            label: 'Total de horas'),
+                                        CustomTextFormField(label: 'Items'),
+                                        CustomTextFormField(
+                                            label: 'Preço por carro'),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              );
+                            },
                           );
                         },
                       ),

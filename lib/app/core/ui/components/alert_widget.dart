@@ -6,13 +6,14 @@ class AlertWidget extends StatelessWidget {
   final IconData? icon;
   final AssetImage? imageIcon;
   final String message;
-  const AlertWidget(
-      {super.key,
-      required this.color,
-      required this.backgroundColor,
-      this.icon,
-      this.imageIcon,
-      required this.message});
+  const AlertWidget({
+    super.key,
+    required this.color,
+    required this.backgroundColor,
+    this.icon,
+    this.imageIcon,
+    required this.message,
+  });
 
   @override
   SnackBar build(BuildContext context) {

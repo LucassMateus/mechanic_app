@@ -6,16 +6,16 @@ class FullDialogWidget extends StatelessWidget {
     required this.title,
     required this.onConfirmText,
     required this.onCancelText,
-    required this.onConfirmPressed,
-    required this.onCancelPressed,
+    this.onConfirmPressed,
+    this.onCancelPressed,
     required this.builder,
   });
 
   final String title;
   final String onConfirmText;
   final String onCancelText;
-  final void Function() onConfirmPressed;
-  final void Function() onCancelPressed;
+  final void Function()? onConfirmPressed;
+  final void Function()? onCancelPressed;
   final Widget Function(BuildContext context) builder;
 
   @override
@@ -81,7 +81,8 @@ class FullDialogWidget extends StatelessWidget {
                         side: BorderSide(color: colorScheme.primary)),
                     backgroundColor: colorScheme.onPrimary,
                   ),
-                  onPressed: onCancelPressed,
+                  onPressed:
+                      onCancelPressed ?? () => Navigator.of(context).pop(),
                   child: Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text(
