@@ -164,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                     Align(
                       alignment: Alignment.bottomRight,
                       child: TextButton(
-                        onPressed: () => Modular.to.navigate('/service-orders'),
+                        onPressed: () => Modular.to.pushNamed('/service-orders'),
                         child: const Text('Ver Mais'),
                       ),
                     ),

@@ -4,11 +4,13 @@ class CustomDrawerController {
   CustomDrawerController() : _selectedIndex = 0;
 
   final Map<int, void Function()> menus = {
-    0: () => Modular.to.navigate('/home'),
-    1: () => Modular.to.navigate('/budgets'),
-    2: () => Modular.to.navigate('/service-orders'),
-    3: () => Modular.to.navigate('/items'),
-    4: () => Modular.to.navigate('/services'),
+    0: () => Modular.to.navigate('/home/'),
+    1: () => Modular.to.navigate('/budgets/'),
+    2: () => Modular.to.navigate('/service-orders/'),
+    3: () => Modular.to.navigate('/registration/items/'),
+    4: () => Modular.to.navigate('/registration/services/'),
+    5: () => Modular.to.navigate('/registration/cars/'),
+    6: () => Modular.to.navigate('/registration/costumers/'),
   };
 
   int _selectedIndex;
@@ -27,4 +29,6 @@ class CustomDrawerController {
     }
     return null;
   }
+
+  void logout() => Modular.to.navigate('/auth/');
 }

@@ -17,6 +17,9 @@ class HomeController extends BaseController {
 
       final result = await _service.call();
 
+      // throw RestException(
+      //     message: 'Erro ao buscar às ordens de serviço', statusCode: 404);
+
       update(SuccessState<List<ServiceOrderModel>>(data: result));
     } on Exception catch (e) {
       update(ErrorState(exception: Exception(e)));

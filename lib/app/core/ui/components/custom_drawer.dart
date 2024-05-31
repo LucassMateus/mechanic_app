@@ -71,7 +71,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
         ),
         NavigationDrawerDestination(
-          enabled: false,
           icon: const Icon(Icons.directions_car_filled_outlined),
           label: Text(
             'Carros',
@@ -79,7 +78,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
         ),
         NavigationDrawerDestination(
-          enabled: false,
           icon: const Icon(Icons.person_2_outlined),
           label: Text(
             'Clientes',
@@ -111,7 +109,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
         SizedBox(
           width: 50,
           child: TextButton.icon(
-            onPressed: () {},
+            onPressed: controller.logout,
             label: SizedBox(
               child: Padding(
                 padding: const EdgeInsets.only(left: 8),
