@@ -56,6 +56,7 @@ CarModel generateRandomCar() {
   final randomBrand = brands[Random().nextInt(brands.length)];
 
   return CarModel(
+    id: Random().nextInt(100),
     model: randomModel,
     brand: randomBrand,
     year: year,
@@ -89,6 +90,8 @@ List<BudgetModel> generateBudgetsList(int count) {
         id: i,
         clientName: 'Client $i',
         car: CarModel(
+          id: i,
+
           model: 'Model $i',
           brand: 'Brand $i',
           year: 2000 + random.nextInt(23), // Year between 2000 and 2023
@@ -110,6 +113,7 @@ List<BudgetModel> generateBudgetsList(int count) {
             ),
             pricePerCar: {
               CarModel(
+                  id: i,
                   model: 'Model $i',
                   brand: 'Brand $i',
                   year: 2000 + random.nextInt(23)): random.nextDouble() * 100,
@@ -149,6 +153,7 @@ List<ServiceModel> createServiceModels({required int count}) {
       ],
       pricePerCar: {
         CarModel(
+          id: index,
           model: 'Modelo $index',
           brand: 'Marca $index',
           year: 2021 + index,
@@ -158,21 +163,32 @@ List<ServiceModel> createServiceModels({required int count}) {
   });
 }
 
-
 List<CustomerModel> generateCustomers(int count) {
   final random = Random();
   final List<CustomerModel> customers = [];
 
-  final names = ['John Doe', 'Jane Smith', 'Alice Johnson', 'Bob Brown', 'Charlie Davis'];
+  final names = [
+    'John Doe',
+    'Jane Smith',
+    'Alice Johnson',
+    'Bob Brown',
+    'Charlie Davis'
+  ];
   final emailProviders = ['example.com', 'mail.com', 'test.com'];
   final phonePrefixes = ['123', '456', '789'];
 
   for (int i = 0; i < count; i++) {
     final name = names[random.nextInt(names.length)];
-    final phoneNumber = '${phonePrefixes[random.nextInt(phonePrefixes.length)]}-${random.nextInt(10000000) + 10000000}';
-    final email = random.nextBool() ? '$name@${emailProviders[random.nextInt(emailProviders.length)]}'.replaceAll(' ', '').toLowerCase() : null;
-    
-    final cars = generateCars(random.nextInt(3) + 1); // Generates between 1 and 3 cars for each customer
+    final phoneNumber =
+        '${phonePrefixes[random.nextInt(phonePrefixes.length)]}-${random.nextInt(10000000) + 10000000}';
+    final email = random.nextBool()
+        ? '$name@${emailProviders[random.nextInt(emailProviders.length)]}'
+            .replaceAll(' ', '')
+            .toLowerCase()
+        : null;
+
+    final cars = generateCars(random.nextInt(3) +
+        1); // Generates between 1 and 3 cars for each customer
 
     customers.add(CustomerModel(
       name: name,
@@ -195,9 +211,11 @@ List<CarModel> generateCars(int count) {
   for (int i = 0; i < count; i++) {
     final model = models[random.nextInt(models.length)];
     final brand = brands[random.nextInt(brands.length)];
-    final year = 2000 + random.nextInt(24); // Generates a year between 2000 and 2023
+    final year =
+        2000 + random.nextInt(24); // Generates a year between 2000 and 2023
 
     cars.add(CarModel(
+      id: random.nextInt(100),
       model: model,
       brand: brand,
       year: year,

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:mechanic_app/app/core/exceptions/auth_exception.dart';
 import 'package:mechanic_app/app/core/modules/user/domain/models/user_model.dart';
 import '../../../../database/sqlite_connection_factory.dart';
@@ -21,7 +20,7 @@ class UserDataBaseRepositoryImpl implements IUserRepository {
         'userName': user,
         'email': email,
         'password': password,
-        'admin': false
+        'admin': 0
       });
     } catch (e) {
       throw RepositoryException(message: 'Erro ao efetuar cadastro');
