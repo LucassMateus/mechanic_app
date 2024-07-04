@@ -4,8 +4,8 @@ import 'package:mechanic_app/app/modules/home/domain/services/i_home_get_cars_se
 import 'package:mechanic_app/app/modules/home/domain/services/i_home_get_cars_service_impl.dart';
 import 'package:mechanic_app/app/modules/home/presenter/controllers/home_controller.dart';
 import 'package:mechanic_app/app/modules/home/presenter/pages/home_page.dart';
-import 'package:mechanic_app/app/modules/service_order/home/infra/repositories/i_service_order_repository.dart';
-import 'package:mechanic_app/app/modules/service_order/home/infra/repositories/service_order_repository_impl.dart';
+import 'package:mechanic_app/app/modules/service_order/infra/repositories/i_service_order_repository.dart';
+import 'package:mechanic_app/app/modules/service_order/infra/repositories/service_order_repository_impl.dart';
 
 class HomeModule extends Module {
   @override

@@ -1,22 +1,36 @@
 import 'package:flutter/material.dart';
 
-class FullDialogWidget extends StatelessWidget {
+class FullDialogWidget extends StatefulWidget {
   const FullDialogWidget({
     super.key,
     required this.title,
     required this.onConfirmText,
     required this.onCancelText,
-    required this.onConfirmPressed,
-    required this.onCancelPressed,
+    this.onConfirmPressed,
+    this.onCancelPressed,
+    this.onDispose,
     required this.builder,
   });
 
   final String title;
   final String onConfirmText;
   final String onCancelText;
-  final void Function() onConfirmPressed;
-  final void Function() onCancelPressed;
+  final void Function()? onConfirmPressed;
+  final void Function()? onCancelPressed;
+  final void Function()? onDispose;
   final Widget Function(BuildContext context) builder;
+
+  @override
+  State<FullDialogWidget> createState() => _FullDialogWidgetState();
+}
+
+class _FullDialogWidgetState extends State<FullDialogWidget> {
+
+  @override
+  void dispose() {
+    widget.onDispose;
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +46,7 @@ class FullDialogWidget extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  title,
+                  widget.title,
                   style: const TextStyle(fontSize: 20),
                 ),
                 const Spacer(),
@@ -42,15 +56,17 @@ class FullDialogWidget extends StatelessWidget {
                   },
                   icon: Icon(
                     Icons.close,
-                    size: 32,
+                    size: 28,
                     color: colorScheme.error,
                   ),
                 ),
               ],
             ),
+            const Divider(),
             const SizedBox(height: 8),
-            builder(context),
+            widget.builder(context),
             const Spacer(),
+            const Divider(),
             Row(
               children: [
                 TextButton(
@@ -61,11 +77,11 @@ class FullDialogWidget extends StatelessWidget {
                     ),
                     backgroundColor: colorScheme.primary,
                   ),
-                  onPressed: onConfirmPressed,
+                  onPressed: widget.onConfirmPressed,
                   child: Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text(
-                      onConfirmText,
+                      widget.onConfirmText,
                       style: TextStyle(color: colorScheme.onPrimary),
                     ),
                   ),
@@ -79,11 +95,12 @@ class FullDialogWidget extends StatelessWidget {
                         side: BorderSide(color: colorScheme.primary)),
                     backgroundColor: colorScheme.onPrimary,
                   ),
-                  onPressed: onCancelPressed,
+                  onPressed:
+                      widget.onCancelPressed ?? () => Navigator.of(context).pop(),
                   child: Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text(
-                      onCancelText,
+                      widget.onCancelText,
                       style: TextStyle(color: colorScheme.primary),
                     ),
                   ),

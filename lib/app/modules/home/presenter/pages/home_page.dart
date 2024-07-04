@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mechanic_app/app/core/state/base_state.dart';
 import 'package:mechanic_app/app/core/ui/alerts/alerts.dart';
+import 'package:mechanic_app/app/core/ui/components/custom_drawer.dart';
 import 'package:mechanic_app/app/helpers/helpers.dart';
 import 'package:mechanic_app/app/core/ui/pages/new_budget_page.dart';
 import 'package:mechanic_app/app/modules/home/presenter/controllers/home_controller.dart';
-import 'package:mechanic_app/app/modules/service_order/home/domain/models/service_order.dart';
+import 'package:mechanic_app/app/modules/service_order/domain/models/service_order.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({required this.controller, super.key});
@@ -56,41 +58,13 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: colorScheme.onPrimary,
       ),
-      drawer: Drawer(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            const Text('Mechanic App'),
-            TextButton(
-              onPressed: () {},
-              child: Text('Home'),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text('Serviços'),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text('Cadastro'),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text('Gerencial'),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text('Agenda'),
-            ),
-          ],
-        ),
-      ),
+      drawer: const CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Column(
           children: [
             Card(
-              color: colorScheme.surfaceDim,
+              // color: colorScheme.surfaceDim,
               elevation: 3,
               child: Container(
                 margin: const EdgeInsetsDirectional.symmetric(
@@ -190,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                     Align(
                       alignment: Alignment.bottomRight,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () => Modular.to.pushNamed('/service-orders'),
                         child: const Text('Ver Mais'),
                       ),
                     ),
@@ -208,14 +182,16 @@ class _HomePageState extends State<HomePage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
-                backgroundColor: colorScheme.surfaceDim,
+                // backgroundColor: colorScheme.surfaceDim,
               ),
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) {
-                    return const NewBudgetPage();
-                  },
+                  builder: (context) => const BudgetDialog(
+                    title: 'Novo Orçamento',
+                    onConfirmText: 'Salvar',
+                    onCancelText: 'Cancelar',
+                  ),
                 );
               },
               child: Text(
