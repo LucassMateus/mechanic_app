@@ -1,4 +1,8 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mechanic_app/app/core/ui/alerts/alerts.dart';
+
 import 'package:mechanic_app/app/modules/registration/customers/domain/models/customer_model.dart';
 import 'package:mechanic_app/app/modules/registration/customers/presenter/controllers/costumer_registration_controller.dart';
 
@@ -10,8 +14,10 @@ import '../../../../../core/ui/components/full_dialog_widget.dart';
 import '../../../../../core/ui/components/registration_card_widget.dart';
 
 class CostumerRegistrationPage extends StatefulWidget {
-  CostumerRegistrationPage({super.key});
-  final controller = CostumerRegistrationController();
+  const CostumerRegistrationPage({super.key, required this.controller});
+
+  final CostumerRegistrationController controller;
+
   @override
   State<CostumerRegistrationPage> createState() =>
       _CostumerRegistrationPageState();
@@ -22,8 +28,19 @@ class _CostumerRegistrationPageState extends State<CostumerRegistrationPage> {
 
   @override
   void initState() {
-    controller.getCosumers();
+    controller.addListener(listener);
+    controller.getCustomers();
     super.initState();
+  }
+
+  void listener() {
+    return switch (controller.state) {
+      SuccessState() =>
+        Alerts.showSuccess(context, 'Clientes buscados com sucesso'),
+      ErrorState(:final exception) =>
+        Alerts.showFailure(context, exception.toString()),
+      _ => null,
+    };
   }
 
   @override
@@ -38,20 +55,43 @@ class _CostumerRegistrationPageState extends State<CostumerRegistrationPage> {
         actions: [
           IconButton(
             onPressed: () {
+              final nameEC = TextEditingController();
+              final emailAddressEC = TextEditingController();
+              final phoneEC = TextEditingController();
               showDialog(
                 context: context,
                 builder: (context) => FullDialogWidget(
                   title: 'Novo Cliente',
                   onConfirmText: 'Salvar',
                   onCancelText: 'Cancelar',
-                  onConfirmPressed: () {},
+                  onConfirmPressed: () async {
+                    await controller.saveCostumer(
+                        nameEC.text, emailAddressEC.text, phoneEC.text);
+
+                    if (!context.mounted) return;
+
+                    Navigator.of(context).pop();
+                  },
                   builder: (context) {
-                    return const Column(
+                    return Column(
                       children: [
-                        CustomTextFormField(label: 'Nome'),
-                        CustomTextFormField(label: 'Telefone'),
-                        CustomTextFormField(label: 'Email'),
-                        CustomTextFormField(label: 'Carros'),
+                        CustomTextFormField(
+                          label: 'Nome',
+                          controller: nameEC,
+                        ),
+                        CustomTextFormField(
+                          label: 'Telefone',
+                          controller: phoneEC,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            TelefoneInputFormatter()
+                          ],
+                        ),
+                        CustomTextFormField(
+                          label: 'Email',
+                          controller: emailAddressEC,
+                        ),
+                        const CustomTextFormField(label: 'Carros'),
                       ],
                     );
                   },
@@ -86,6 +126,13 @@ class _CostumerRegistrationPageState extends State<CostumerRegistrationPage> {
                         itemCount: data.length,
                         itemBuilder: (context, index) {
                           final customer = data[index];
+                          final nameEC =
+                              TextEditingController(text: customer.name);
+                          final emailAddressEC =
+                              TextEditingController(text: customer.email);
+                          final phoneEC =
+                              TextEditingController(text: customer.phoneNumber);
+
                           return RegistrationCardWidget(
                             title: customer.name,
                             subTitle: customer.phoneNumber,
@@ -97,14 +144,34 @@ class _CostumerRegistrationPageState extends State<CostumerRegistrationPage> {
                                 title: 'Cliente: ${customer.name}',
                                 onConfirmText: 'Atualizar',
                                 onCancelText: 'Cancelar',
-                                onConfirmPressed: () {},
+                                onConfirmPressed: () async =>
+                                    await controller.updateCostumer(
+                                        customer.id,
+                                        nameEC.text,
+                                        emailAddressEC.text,
+                                        phoneEC.text),
                                 builder: (context) {
-                                  return const Column(
+                                  return Column(
                                     children: [
-                                      CustomTextFormField(label: 'Nome'),
-                                      CustomTextFormField(label: 'Telefone'),
-                                      CustomTextFormField(label: 'Email'),
-                                      CustomTextFormField(label: 'Carros'),
+                                      CustomTextFormField(
+                                        label: 'Nome',
+                                        controller: nameEC,
+                                      ),
+                                      CustomTextFormField(
+                                        label: 'Telefone',
+                                        controller: phoneEC,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter
+                                              .digitsOnly,
+                                          TelefoneInputFormatter()
+                                        ],
+                                      ),
+                                      CustomTextFormField(
+                                        label: 'Email',
+                                        controller: emailAddressEC,
+                                      ),
+                                      const CustomTextFormField(
+                                          label: 'Carros'),
                                     ],
                                   );
                                 },
