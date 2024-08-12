@@ -11,7 +11,7 @@ class CarDataBaseRepositoryImpl implements ICarRepository {
   final SqliteConnectionFactory _dbFactory;
 
   @override
-  Future<List<CarModel>> getCars() async {
+  Future<List<CarModel>> getAll() async {
     try {
       final connection = await _dbFactory.openConnection();
       final queryResult = await connection.rawQuery('''select * from Cars''');

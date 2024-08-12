@@ -25,7 +25,6 @@ class FullDialogWidget extends StatefulWidget {
 }
 
 class _FullDialogWidgetState extends State<FullDialogWidget> {
-
   @override
   void dispose() {
     widget.onDispose;
@@ -64,8 +63,11 @@ class _FullDialogWidgetState extends State<FullDialogWidget> {
             ),
             const Divider(),
             const SizedBox(height: 8),
-            widget.builder(context),
-            const Spacer(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: widget.builder(context),
+              ),
+            ),
             const Divider(),
             Row(
               children: [
@@ -95,8 +97,8 @@ class _FullDialogWidgetState extends State<FullDialogWidget> {
                         side: BorderSide(color: colorScheme.primary)),
                     backgroundColor: colorScheme.onPrimary,
                   ),
-                  onPressed:
-                      widget.onCancelPressed ?? () => Navigator.of(context).pop(),
+                  onPressed: widget.onCancelPressed ??
+                      () => Navigator.of(context).pop(),
                   child: Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text(
@@ -106,7 +108,7 @@ class _FullDialogWidgetState extends State<FullDialogWidget> {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

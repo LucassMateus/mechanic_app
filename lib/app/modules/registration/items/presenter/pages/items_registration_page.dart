@@ -1,4 +1,6 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:mechanic_app/app/core/state/base_state.dart';
 import 'package:mechanic_app/app/core/ui/alerts/alerts.dart';
@@ -80,6 +82,9 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
                             CustomTextFormField(
                               label: 'Codigo',
                               controller: codeEC,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
                             ),
                             CustomTextFormField(
                               label: 'Descrição',
@@ -88,6 +93,13 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
                             CustomTextFormField(
                               label: 'Custo',
                               controller: costEC,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                CentavosInputFormatter(
+                                  casasDecimais: 2,
+                                  moeda: true,
+                                )
+                              ],
                             ),
                           ],
                         );
@@ -136,7 +148,8 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
                                 final descriptionEC = TextEditingController(
                                     text: item.description);
                                 final costEC = TextEditingController(
-                                    text: item.cost.toString());
+                                  text: UtilBrasilFields.obterReal(item.cost),
+                                );
 
                                 return FullDialogWidget(
                                   title: 'Item: ${item.code}',
@@ -158,6 +171,10 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
                                         CustomTextFormField(
                                           label: 'Codigo',
                                           controller: codeEC,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
+                                          ],
                                         ),
                                         CustomTextFormField(
                                           label: 'Descrição',
@@ -166,6 +183,14 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
                                         CustomTextFormField(
                                           label: 'Custo',
                                           controller: costEC,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                            CentavosInputFormatter(
+                                              casasDecimais: 2,
+                                              moeda: true,
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     );

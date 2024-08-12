@@ -1,6 +1,5 @@
 import 'package:mechanic_app/app/core/controllers/base_controller.dart';
 import 'package:mechanic_app/app/core/state/base_state.dart';
-import 'package:mechanic_app/app/helpers/functions.dart';
 import 'package:mechanic_app/app/modules/registration/items/domain/models/item_model.dart';
 import 'package:mechanic_app/app/modules/registration/items/domain/services/get/i_items_get_service.dart';
 import 'package:mechanic_app/app/modules/registration/items/domain/services/remove/i_items_remove_service.dart';

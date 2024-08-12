@@ -4,14 +4,21 @@ import 'package:mechanic_app/app/core/state/base_state.dart';
 import 'package:mechanic_app/app/core/ui/alerts/alerts.dart';
 import 'package:mechanic_app/app/core/ui/components/custom_drawer.dart';
 import 'package:mechanic_app/app/helpers/helpers.dart';
-import 'package:mechanic_app/app/core/ui/pages/new_budget_page.dart';
+import 'package:mechanic_app/app/modules/budget/presenter/controllers/budget_dialog_controller.dart';
 import 'package:mechanic_app/app/modules/home/presenter/controllers/home_controller.dart';
 import 'package:mechanic_app/app/modules/service_order/domain/models/service_order.dart';
 
+import '../../../budget/presenter/components/budget_dialog.dart';
+
 class HomePage extends StatefulWidget {
-  const HomePage({required this.controller, super.key});
+  const HomePage({
+    required this.controller,
+    required this.dialogController,
+    super.key,
+  });
 
   final HomeController controller;
+  final BudgetDialogController dialogController;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -19,6 +26,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   HomeController get controller => widget.controller;
+  BudgetDialogController get dialogController => widget.dialogController;
 
   @override
   void initState() {
@@ -164,7 +172,8 @@ class _HomePageState extends State<HomePage> {
                     Align(
                       alignment: Alignment.bottomRight,
                       child: TextButton(
-                        onPressed: () => Modular.to.pushNamed('/service-orders'),
+                        onPressed: () =>
+                            Modular.to.pushNamed('/service-orders'),
                         child: const Text('Ver Mais'),
                       ),
                     ),
@@ -187,7 +196,8 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) => const BudgetDialog(
+                  builder: (context) => BudgetDialog(
+                    controller: dialogController,
                     title: 'Novo Orçamento',
                     onConfirmText: 'Salvar',
                     onCancelText: 'Cancelar',

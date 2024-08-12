@@ -100,6 +100,7 @@ List<BudgetModel> generateBudgetsList(int count) {
         services: List<ServiceModel>.generate(
           3,
           (index) => ServiceModel(
+            id: index,
             name: 'Service $index',
             description: 'Description of Service $index',
             hoursAmount: random.nextInt(10),
@@ -141,6 +142,7 @@ List<BudgetModel> generateBudgetsList(int count) {
 List<ServiceModel> createServiceModels({required int count}) {
   return List.generate(count, (index) {
     return ServiceModel(
+      id: index,
       name: 'Serviço $index',
       description: 'Descrição do serviço $index...',
       hoursAmount: 2 + index, // Ajuste conforme necessário
@@ -191,6 +193,7 @@ List<CustomerModel> generateCustomers(int count) {
         1); // Generates between 1 and 3 cars for each customer
 
     customers.add(CustomerModel(
+      id: random.nextInt(100),
       name: name,
       phoneNumber: phoneNumber,
       email: email,

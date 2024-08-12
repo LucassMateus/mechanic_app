@@ -8,5 +8,5 @@ class CarGetServiceImpl implements ICarGetService {
 
   final ICarRepository _repository;
   @override
-  Future<List<CarModel>> call() async => _repository.getCars();
+  Future<List<CarModel>> call() async => _repository.getAll();
 }

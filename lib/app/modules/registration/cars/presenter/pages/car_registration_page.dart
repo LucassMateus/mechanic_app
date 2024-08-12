@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mechanic_app/app/core/ui/alerts/alerts.dart';
 import 'package:mechanic_app/app/modules/registration/cars/domain/models/car_model.dart';
 import 'package:mechanic_app/app/modules/registration/cars/presenter/controllers/car_registration_controller.dart';
@@ -81,7 +82,12 @@ class _CarRegistrationPageState extends State<CarRegistrationPage> {
                             CustomTextFormField(
                                 label: 'Marca', controller: brandEC),
                             CustomTextFormField(
-                                label: 'Ano', controller: yearEC),
+                              label: 'Ano',
+                              controller: yearEC,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                            ),
                           ],
                         );
                       },
@@ -159,7 +165,13 @@ class _CarRegistrationPageState extends State<CarRegistrationPage> {
                                               label: 'Marca',
                                               controller: brandEC),
                                           CustomTextFormField(
-                                              label: 'Ano', controller: yearEC),
+                                            label: 'Ano',
+                                            controller: yearEC,
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                          ),
                                         ],
                                       );
                                     },
