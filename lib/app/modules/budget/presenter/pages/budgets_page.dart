@@ -3,22 +3,31 @@ import 'package:mechanic_app/app/core/state/base_state.dart';
 import 'package:mechanic_app/app/core/ui/components/custom_drawer.dart';
 import 'package:mechanic_app/app/core/ui/components/custom_search_widget.dart';
 import 'package:mechanic_app/app/core/ui/components/registration_card_widget.dart';
-import 'package:mechanic_app/app/core/ui/pages/new_budget_page.dart';
 import 'package:mechanic_app/app/modules/budget/domain/models/budget_model.dart';
+import 'package:mechanic_app/app/modules/budget/presenter/controllers/budget_dialog_controller.dart';
 import 'package:mechanic_app/app/modules/budget/presenter/controllers/budgets_controller.dart';
 
 import '../../../../core/models/document_service.dart';
+import '../components/budget_dialog.dart';
 
 class BudgetsPage extends StatefulWidget {
-  BudgetsPage({super.key});
+  const BudgetsPage({
+    super.key,
+    required this.controller,
+    required this.dialogController,
+  });
 
-  final BudgetsController controller = BudgetsController();
+  final BudgetsController controller;
+  final BudgetDialogController dialogController;
+
   @override
   State<BudgetsPage> createState() => _BudgetsPageState();
 }
 
 class _BudgetsPageState extends State<BudgetsPage> {
   BudgetsController get controller => widget.controller;
+  BudgetDialogController get dialogController => widget.dialogController;
+
 
   @override
   void initState() {
@@ -40,7 +49,8 @@ class _BudgetsPageState extends State<BudgetsPage> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (context) => const BudgetDialog(
+                builder: (context) => BudgetDialog(
+                  controller: dialogController,
                   title: 'Novo Orçamento',
                   onConfirmText: 'Salvar',
                   onCancelText: 'Cancelar',
@@ -136,6 +146,7 @@ class _BudgetsPageState extends State<BudgetsPage> {
                               context: context,
                               builder: (context) {
                                 return BudgetDialog(
+                                  controller: dialogController,
                                   title: 'Orçamento: ${budget.id}',
                                   onConfirmText: 'Atualizar',
                                   onCancelText: 'Cancelar',
