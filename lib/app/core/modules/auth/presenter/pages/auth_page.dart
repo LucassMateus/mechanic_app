@@ -47,79 +47,86 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return Center(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight, maxWidth: 350),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SizedBox(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const MechanicAppLogo(height: 150),
-                      const SizedBox(height: 20),
-                      Form(
-                        key: formKey,
-                        child: Column(
-                          children: [
-                            CustomTextFormField(
-                              label: 'Usuario',
-                              controller: userEC,
-                            ),
-                            const SizedBox(height: 20),
-                            CustomTextFormField(
-                              label: 'Senha',
-                              controller: passwordEC,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      ValueListenableBuilder(
-                        valueListenable: controller,
-                        builder: (_, state, child) {
-                          return switch (state) {
-                            LoadingState() => const Center(
-                                child: CircularProgressIndicator.adaptive(),
-                              ),
-                            _ => ElevatedButton(
-                                onPressed: () async {
-                                  await controller.login(
-                                      userEC.text, passwordEC.text);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  fixedSize: const Size(double.maxFinite, 50),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                ),
-                                child: const Text('Entrar'),
-                              ),
-                          };
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight, maxWidth: 350),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SizedBox(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Não tem conta?'),
-                          TextButton(
-                            onPressed: () {
-                              Modular.to.pushNamed('/register/');
+                          const MechanicAppLogo(height: 150),
+                          const SizedBox(height: 20),
+                          Form(
+                            key: formKey,
+                            child: Column(
+                              children: [
+                                CustomTextFormField(
+                                  label: 'Usuario',
+                                  controller: userEC,
+                                ),
+                                const SizedBox(height: 20),
+                                CustomTextFormField(
+                                  label: 'Senha',
+                                  controller: passwordEC,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          ValueListenableBuilder(
+                            valueListenable: controller,
+                            builder: (_, state, child) {
+                              return switch (state) {
+                                LoadingState() => const SizedBox(
+                                  height: 50,
+                                  child: Center(
+                                      child: CircularProgressIndicator.adaptive(),
+                                    ),
+                                ),
+                                _ => ElevatedButton(
+                                    onPressed: () async {
+                                      await controller.login(
+                                          userEC.text, passwordEC.text);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      fixedSize: const Size(double.maxFinite, 50),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20)),
+                                    ),
+                                    child: const Text('Entrar'),
+                                  ),
+                              };
                             },
-                            child: const Text('Cadastre-se'),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text('Não tem conta?'),
+                              TextButton(
+                                onPressed: () {
+                                  Modular.to.pushNamed('/register/');
+                                },
+                                child: const Text('Cadastre-se'),
+                              )
+                            ],
                           )
                         ],
-                      )
-                    ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
