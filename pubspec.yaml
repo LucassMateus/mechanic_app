@@ -38,14 +38,20 @@ dependencies:
   intl: ^0.19.0
   sqflite: ^2.3.2
   sqflite_common: ^2.5.4
+  sqflite_common_ffi: ^2.3.4
   synchronized: ^3.1.0+1
   brasil_fields: ^1.15.0
   dropdown_search: ^5.0.6
+  sqflite_entity_mapper_orm:
+    path: ../sqflite_entity_mapper_orm
+  lucid_validation: ^1.1.0
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mocktail: ^1.0.4
+  test: ^1.25.7
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:mechanic_app/app/core/database/sqlite_adm_connection.dart';
+import 'package:sqflite_entity_mapper_orm/sqflite_entity_mapper_orm.dart';
+
+import 'database/app_db_context.dart';
 
 class MechanicCoreConfig extends StatefulWidget {
   const MechanicCoreConfig({
@@ -15,18 +17,42 @@ class MechanicCoreConfig extends StatefulWidget {
 }
 
 class _MechanicCoreConfigState extends State<MechanicCoreConfig> {
-  final SqliteAdmConnection sqliteAdmConnection =
-      Modular.get<SqliteAdmConnection>();
+  void configure() async {
+    DataBaseConfig.initialize(
+      name: 'CAR_MECHANIC_DB_DEV',
+      // name: 'CAR_MECHANIC_DB_DEV',
+      version: 1,
+      migrations: [
+        // MigrationV1(),
+        // MigrationV2(),
+        // MigrationV3(),
+        // MigrationV4(),
+      ],
+    );
+
+    // final cnx = SqliteDbConnection.get();
+    // await cnx.applyMigrations();
+
+    WidgetsBinding.instance.addObserver(SqliteAdmConnection.i);
+
+    final dbContext = Modular.get<AppDbContext>();
+    dbContext.initialize();
+
+    // await MigrationManager.applyMigrations(
+    //   SqliteDbConnection.get(),
+    //   dbContext.dbSets.map((e) => e.dbEntity).toList(),
+    // );
+  }
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(sqliteAdmConnection);
+    configure();
     super.initState();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(sqliteAdmConnection);
+    WidgetsBinding.instance.removeObserver(SqliteAdmConnection.i);
     super.dispose();
   }
 

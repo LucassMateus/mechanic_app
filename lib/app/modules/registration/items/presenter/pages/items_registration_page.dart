@@ -12,6 +12,8 @@ import 'package:mechanic_app/app/core/ui/components/registration_card_widget.dar
 import 'package:mechanic_app/app/modules/registration/items/domain/models/item_model.dart';
 import 'package:mechanic_app/app/modules/registration/items/presenter/controllers/items_registration_controller.dart';
 
+import '../../domain/dtos/item_save_dto.dart';
+
 class ItemsRegistrationPage extends StatefulWidget {
   const ItemsRegistrationPage({
     super.key,
@@ -26,6 +28,7 @@ class ItemsRegistrationPage extends StatefulWidget {
 
 class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
   ItemsRegistrationController get controller => widget.controller;
+  final itemSaveDto = ItemSaveDto();
 
   @override
   void initState() {
@@ -67,13 +70,10 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
                       title: 'Novo Item',
                       onConfirmText: 'Salvar',
                       onCancelText: 'Cancelar',
-                      onConfirmPressed: () {
-                        controller.saveItem(
-                          int.parse(codeEC.text),
-                          descriptionEC.text,
-                          double.parse(costEC.text),
-                        );
-                        Navigator.pop(context);
+                      onConfirmPressed: () async {
+                        final navigator = Navigator.of(context);
+                        await controller.saveItem(itemSaveDto);
+                        if (mounted) navigator.pop();
                       },
                       onCancelPressed: () => Navigator.pop(context),
                       builder: (context) {
@@ -82,6 +82,7 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
                             CustomTextFormField(
                               label: 'Codigo',
                               controller: codeEC,
+                              onChanged: itemSaveDto.setCode,
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly
                               ],
@@ -89,10 +90,16 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
                             CustomTextFormField(
                               label: 'Descrição',
                               controller: descriptionEC,
+                              onChanged: itemSaveDto.setDescription,
                             ),
                             CustomTextFormField(
                               label: 'Custo',
                               controller: costEC,
+                              onChanged: (value) => itemSaveDto.setCost(
+                                UtilBrasilFields.removerSimboloMoeda(
+                                  value ?? '',
+                                ),
+                              ),
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
                                 CentavosInputFormatter(
@@ -155,13 +162,21 @@ class _ItemsRegistrationPageState extends State<ItemsRegistrationPage> {
                                   title: 'Item: ${item.code}',
                                   onConfirmText: 'Atualizar',
                                   onCancelText: 'Cancelar',
-                                  onConfirmPressed: () {
-                                    controller.updateItem(
-                                      int.parse(codeEC.text),
-                                      descriptionEC.text,
-                                      double.parse(costEC.text),
+                                  onConfirmPressed: () async {
+                                    final costReplaced =
+                                        UtilBrasilFields.removerSimboloMoeda(
+                                      costEC.text,
+                                    ).replaceAll(',', '.');
+
+                                    final updatedItem = ItemModel(
+                                      id: item.id,
+                                      code: int.tryParse(codeEC.text) ?? 0,
+                                      description: descriptionEC.text,
+                                      cost: double.tryParse(costReplaced) ?? 0,
                                     );
-                                    Navigator.of(context).pop();
+                                    final navigator = Navigator.of(context);
+                                    await controller.updateItem(updatedItem);
+                                    if (mounted) navigator.pop();
                                   },
                                   onCancelPressed: () =>
                                       Navigator.of(context).pop(),

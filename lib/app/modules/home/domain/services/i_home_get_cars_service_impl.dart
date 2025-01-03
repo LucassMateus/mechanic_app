@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:mechanic_app/app/core/exceptions/service_exception.dart';
 import 'package:mechanic_app/app/modules/service_order/domain/models/service_order.dart';
-import 'package:mechanic_app/app/modules/service_order/infra/repositories/i_service_order_repository.dart';
 
+import '../../../service_order/domain/repositories/i_service_order_repository.dart';
 import 'i_home_get_cars_service.dart';
 
 class HomeGetCarsServiceImpl implements IHomeGetCarsService {

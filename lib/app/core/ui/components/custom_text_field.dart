@@ -6,16 +6,22 @@ class CustomTextFormField extends StatelessWidget {
     required this.label,
     this.radius = 16,
     this.formKey,
+    this.onChanged,
     this.controller,
+    this.validator,
     this.inputFormatters,
+    this.keyboardType,
     super.key,
   });
 
   final String label;
   final double radius;
   final Key? formKey;
+  final void Function(String?)? onChanged;
   final TextEditingController? controller;
+  final String? Function([String?])? validator;
   final List<TextInputFormatter>? inputFormatters;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +29,11 @@ class CustomTextFormField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: TextFormField(
         key: formKey,
+        onChanged: onChanged,
+        validator: validator,
         controller: controller,
         inputFormatters: inputFormatters,
+        keyboardType: keyboardType,
         decoration: InputDecoration(
           labelText: label,
           labelStyle: const TextStyle(fontSize: 15),

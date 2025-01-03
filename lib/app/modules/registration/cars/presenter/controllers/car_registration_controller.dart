@@ -1,10 +1,12 @@
 import 'package:mechanic_app/app/core/controllers/base_controller.dart';
 import 'package:mechanic_app/app/core/state/base_state.dart';
+import 'package:mechanic_app/app/modules/registration/cars/domain/dtos/car_save_dto.dart';
 import 'package:mechanic_app/app/modules/registration/cars/domain/models/car_model.dart';
 import 'package:mechanic_app/app/modules/registration/cars/domain/services/get/i_car_get_service.dart';
 import 'package:mechanic_app/app/modules/registration/cars/domain/services/remove/i_car_remove_service.dart';
 import 'package:mechanic_app/app/modules/registration/cars/domain/services/save/i_car_save_service.dart';
 import 'package:mechanic_app/app/modules/registration/cars/domain/services/update/i_car_update_service.dart';
+import 'package:sqflite_entity_mapper_orm/sqflite_entity_mapper_orm.dart';
 
 class CarRegistrationController extends BaseController {
   CarRegistrationController({
@@ -30,7 +32,7 @@ class CarRegistrationController extends BaseController {
     update(LoadingState());
     try {
       _clearAll();
-      
+      await Future.delayed(const Duration(seconds: 2));
       final cars = await _getService.call();
 
       _cars.addAll(cars);
@@ -45,7 +47,7 @@ class CarRegistrationController extends BaseController {
   Future<void> removeCar(CarModel car) async {
     update(LoadingState());
     try {
-      await _removeService.call(car.id);
+      await _removeService.call(car);
       _cars.remove(car);
       _filteredCars.remove(car);
       update(SuccessState(data: _filteredCars));
@@ -54,10 +56,11 @@ class CarRegistrationController extends BaseController {
     }
   }
 
-  Future<void> saveCar(String model, String brand, int year) async {
+  Future<void> saveCar(CarSaveDto dto) async {
     update(LoadingState());
     try {
-      await _saveService.call(model, brand, year);
+      final car = MapperService().toEntity<CarModel, CarSaveDto>(dto);
+      await _saveService.call(car);
       await getCars();
 
       update(SuccessState(data: _filteredCars));
@@ -66,10 +69,9 @@ class CarRegistrationController extends BaseController {
     }
   }
 
-    Future<void> updateCar(String model, String brand, String year, int id) async {
+  Future<void> updateCar(CarModel updatedCar) async {
     update(LoadingState());
     try {
-      final updatedCar = CarModel(id: id, model: model, brand: brand, year: int.parse(year));
       await _updateService.call(updatedCar);
       await getCars();
 

@@ -1,66 +1,24 @@
-import 'package:mechanic_app/app/core/database/sqlite_connection_factory.dart';
-import 'package:mechanic_app/app/core/exceptions/repository_exception.dart';
+import 'package:flutter/material.dart';
+
 import 'package:mechanic_app/app/modules/registration/items/domain/models/item_model.dart';
-import 'package:mechanic_app/app/modules/registration/items/infra/repositories/i_item_repository.dart';
+import 'package:mechanic_app/app/modules/registration/items/domain/repositories/i_item_repository.dart';
+import 'package:mechanic_app/app/modules/registration/items/external/data_sources/items_local_dao.dart';
 
 class ItemDataBaseRepositoryImpl implements IItemRepository {
-  ItemDataBaseRepositoryImpl({required SqliteConnectionFactory dbFactory})
-      : _dbFactory = dbFactory;
+  ItemDataBaseRepositoryImpl({required this.localDao});
 
-  final SqliteConnectionFactory _dbFactory;
-
-  @override
-  Future<void> delete(int code) async {
-    try {
-      final connection = await _dbFactory.openConnection();
-      await connection.rawDelete('DELETE FROM Items WHERE code = ?', [code]);
-    } catch (e) {
-      throw RepositoryException(
-          message: 'Erro ao excluir carro. ${e.toString()}');
-    }
-  }
+  @protected
+  final ItemsLocalDao localDao;
 
   @override
-  Future<List<ItemModel>> getItems() async {
-    try {
-      final connection = await _dbFactory.openConnection();
-      final queryResult = await connection.rawQuery('''select * from Items''');
-
-      final items = queryResult.map((e) => ItemModel.fromMap(e)).toList();
-      return items;
-    } catch (e) {
-      throw RepositoryException(
-          message: 'Erro ao buscar os itens salvos. ${e.toString()}');
-    }
-  }
+  Future<void> delete(ItemModel item) async => localDao.remove(item);
 
   @override
-  Future<void> save(int code, String description, double cost) async {
-    try {
-      final connection = await _dbFactory.openConnection();
-      await connection.insert('Items', {
-        'code': code,
-        'description': description,
-        'cost': cost,
-      });
-    } catch (e) {
-      throw RepositoryException(
-          message: 'Erro ao salvar item. ${e.toString()}');
-    }
-  }
+  Future<List<ItemModel>> getItems() async => localDao.getAll();
 
   @override
-  Future<void> update(ItemModel item) async {
-    try {
-      final connection = await _dbFactory.openConnection();
-      await connection.rawUpdate('''UPDATE Items 
-                                    SET description = ?, 
-                                        cost = ? 
-                                    WHERE code = ?''',
-          [item.description, item.cost, item.code]);
-    } catch (e) {
-      throw RepositoryException(
-          message: 'Erro ao atualizar item. ${e.toString()}');
-    }
-  }
+  Future<void> save(ItemModel item) async => localDao.save(item);
+
+  @override
+  Future<void> update(ItemModel item) async => localDao.update(item);
 }

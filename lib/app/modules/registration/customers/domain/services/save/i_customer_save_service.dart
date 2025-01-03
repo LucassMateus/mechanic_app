@@ -1,3 +1,5 @@
+import '../../models/customer_model.dart';
+
 abstract interface class ICustomerSaveService {
-  Future<void> call(String name, String emailAddress, String phone);
+  Future<CustomerModel> call(CustomerModel dto);
 }

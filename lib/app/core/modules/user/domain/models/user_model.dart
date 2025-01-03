@@ -1,36 +1,56 @@
 import 'dart:convert';
 
 class UserModel {
-  String? name;
-  String? user;
-  String? password;
-  String? token;
+  int id;
+  String name;
+  String email;
+  String user;
+  String password;
+  bool admin;
+
   UserModel({
-    this.name,
-    this.user,
-    this.password,
-    this.token,
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.user,
+    required this.password,
+    required this.admin,
   });
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
+      'email': email,
       'user': user,
       'password': password,
-      'token': token,
+      'admin': admin,
     };
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
+  Map<String, dynamic> upSave() {
+    return {
+      'name': name,
+      'email': email,
+      'user': user,
+      'password': password,
+      'admin': admin,
+    };
+  }
+
+  factory UserModel.fromDbMap(Map<String, dynamic> map) {
     return UserModel(
+      id: map['id'],
       name: map['name'],
-      user: map['userName'],
+      email: map['email'],
+      user: map['user'],
       password: map['password'],
-      token: map['token'],
+      admin: map['admin'] == 1 ? true : false,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source));
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromDbMap(json.decode(source));
 }

@@ -2,7 +2,8 @@
 import 'package:mechanic_app/app/core/local_storage/i_local_storage.dart';
 import 'package:mechanic_app/app/core/modules/user/domain/models/user_model.dart';
 
-import '../../../infra/repository/i_user_repository.dart';
+import '../../dtos/user_login_dto.dart';
+import '../../repositories/i_user_repository.dart';
 import 'i_user_login_service.dart';
 
 class UserLoginServiceImpl implements IUserLoginService {
@@ -16,8 +17,8 @@ class UserLoginServiceImpl implements IUserLoginService {
   final ILocalStorage _localStorage;
 
   @override
-  Future<UserModel> call(String user, String password) async {
-    final result = await _userRepository.login(user, password);
+  Future<UserModel> call(UserLoginDto dto) async {
+    final result = await _userRepository.login(dto);
     return result;
   }
 }

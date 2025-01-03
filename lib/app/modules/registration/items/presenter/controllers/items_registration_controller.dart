@@ -1,10 +1,12 @@
 import 'package:mechanic_app/app/core/controllers/base_controller.dart';
 import 'package:mechanic_app/app/core/state/base_state.dart';
+import 'package:mechanic_app/app/modules/registration/items/domain/dtos/item_save_dto.dart';
 import 'package:mechanic_app/app/modules/registration/items/domain/models/item_model.dart';
 import 'package:mechanic_app/app/modules/registration/items/domain/services/get/i_items_get_service.dart';
 import 'package:mechanic_app/app/modules/registration/items/domain/services/remove/i_items_remove_service.dart';
 import 'package:mechanic_app/app/modules/registration/items/domain/services/save/i_items_save_service.dart';
 import 'package:mechanic_app/app/modules/registration/items/domain/services/update/i_items_update_service.dart';
+import 'package:sqflite_entity_mapper_orm/sqflite_entity_mapper_orm.dart';
 
 class ItemsRegistrationController extends BaseController {
   ItemsRegistrationController({
@@ -45,7 +47,7 @@ class ItemsRegistrationController extends BaseController {
   Future<void> removeItem(ItemModel item) async {
     update(LoadingState());
     try {
-      await _removeService.call(item.code);
+      await _removeService.call(item);
       _allItems.remove(item);
       _filteredItems.remove(item);
       update(SuccessState(data: _filteredItems));
@@ -54,10 +56,11 @@ class ItemsRegistrationController extends BaseController {
     }
   }
 
-  Future<void> saveItem(int code, String description, double cost) async {
+  Future<void> saveItem(ItemSaveDto dto) async {
     update(LoadingState());
     try {
-      await _saveService.call(code, description, cost);
+      final item = MapperService().toEntity<ItemModel, ItemSaveDto>(dto);
+      await _saveService.call(item);
       await getItems();
 
       update(SuccessState(data: _filteredItems));
@@ -66,12 +69,9 @@ class ItemsRegistrationController extends BaseController {
     }
   }
 
-  Future<void> updateItem(int code,
-      String description, double cost) async {
+  Future<void> updateItem(ItemModel updatedItem) async {
     update(LoadingState());
     try {
-      final updatedItem =
-          ItemModel(code: code, description: description, cost: cost);
       await _updateService.call(updatedItem);
       await getItems();
 
@@ -98,5 +98,4 @@ class ItemsRegistrationController extends BaseController {
     _allItems.clear();
     _filteredItems.clear();
   }
-
 }

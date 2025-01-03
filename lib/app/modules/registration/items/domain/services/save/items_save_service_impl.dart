@@ -1,5 +1,6 @@
-import 'package:mechanic_app/app/modules/registration/items/infra/repositories/i_item_repository.dart';
+import 'package:mechanic_app/app/modules/registration/items/domain/models/item_model.dart';
 
+import '../../repositories/i_item_repository.dart';
 import './i_items_save_service.dart';
 
 class ItemsSaveServiceImpl implements IItemsSaveService {
@@ -9,6 +10,7 @@ class ItemsSaveServiceImpl implements IItemsSaveService {
   final IItemRepository _repository;
 
   @override
-  Future<void> call(int code, String description, double cost) async =>
-      await _repository.save(code, description, cost);
+  Future<void> call(ItemModel item) async {
+    await _repository.save(item);
+  }
 }

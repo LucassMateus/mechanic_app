@@ -16,7 +16,20 @@ class BudgetModel extends DocumentService {
   final int id;
 
   @override
-  double getValor() {
-    throw UnimplementedError();
+  double getValue() {
+    double value = 0;
+
+    for (final service in services) {
+      value += service.items.fold(
+        0,
+        (previousValue, element) => previousValue + element.getValue(),
+      );
+    }
+
+    for (final item in additionalItems) {
+      value += item.getValue();
+    }
+
+    return value;
   }
 }

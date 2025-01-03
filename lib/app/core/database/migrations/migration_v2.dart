@@ -1,6 +1,5 @@
 import 'package:sqflite_common/sqlite_api.dart';
-
-import 'i_migration.dart';
+import 'package:sqflite_entity_mapper_orm/sqflite_entity_mapper_orm.dart';
 
 class MigrationV2 implements IMigration {
   @override
@@ -9,7 +8,7 @@ class MigrationV2 implements IMigration {
   @override
   void update(Batch update) {
     update.execute('''
-      CREATE TABLE Customers (
+      CREATE TABLE IF NOT EXISTS Customers (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name VARCHAR(100) NOT NULL,
         address VARCHAR(100),
@@ -18,7 +17,7 @@ class MigrationV2 implements IMigration {
     ''');
 
     update.execute('''
-      CREATE TABLE Cars (
+      CREATE TABLE IF NOT EXISTS Cars (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         model VARCHAR(50) NOT NULL,
         brand VARCHAR(50) NOT NULL,
@@ -27,17 +26,7 @@ class MigrationV2 implements IMigration {
     ''');
 
     update.execute('''
-      CREATE TABLE CustomerCars (
-        customer_id INTEGER NOT NULL,
-        car_id INTEGER NOT NULL,
-        PRIMARY KEY (customer_id, car_id),
-        FOREIGN KEY (customer_id) REFERENCES Customers(id),
-        FOREIGN KEY (car_id) REFERENCES Cars(id)
-      )
-    ''');
-
-    update.execute('''
-      CREATE TABLE Items (
+      CREATE TABLE IF NOT EXISTS Items (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         code INTEGER NOT NULL,
         description VARCHAR(100),
@@ -46,58 +35,11 @@ class MigrationV2 implements IMigration {
     ''');
 
     update.execute('''
-      CREATE TABLE Services (
+      CREATE TABLE IF NOT EXISTS Services (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name VARCHAR(50) NOT NULL,
         description VARCHAR(100),
         quantity_hours INTEGER NOT NULL
-      )
-    ''');
-
-    update.execute('''
-      CREATE TABLE CostTypes (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name VARCHAR(50) NOT NULL
-      )
-    ''');
-
-    update.execute('''
-      CREATE TABLE Costs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        cost_type_id INTEGER NOT NULL,
-        name VARCHAR(50) NOT NULL,
-        value DECIMAL(10, 2) NOT NULL,
-        date DATE NOT NULL,
-        end_date DATE,
-        FOREIGN KEY (cost_type_id) REFERENCES CostTypes(id)
-      )
-    ''');
-
-    update.execute('''
-      CREATE TABLE ServiceOrders (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        start_date DATE NOT NULL,
-        end_date DATE
-      )
-    ''');
-
-    update.execute('''
-      CREATE TABLE ServiceOrderServices (
-        service_order_id INTEGER NOT NULL,
-        service_id INTEGER NOT NULL,
-        PRIMARY KEY (service_order_id, service_id),
-        FOREIGN KEY (service_order_id) REFERENCES ServiceOrders(id),
-        FOREIGN KEY (service_id) REFERENCES Services(id)
-      )
-    ''');
-
-    update.execute('''
-      CREATE TABLE ServiceOrderItems (
-        service_order_id INTEGER NOT NULL,
-        item_id INTEGER NOT NULL,
-        PRIMARY KEY (service_order_id, item_id),
-        FOREIGN KEY (service_order_id) REFERENCES ServiceOrders(id),
-        FOREIGN KEY (item_id) REFERENCES Items(id)
       )
     ''');
   }

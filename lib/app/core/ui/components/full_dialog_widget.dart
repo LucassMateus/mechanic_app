@@ -26,12 +26,6 @@ class FullDialogWidget extends StatefulWidget {
 
 class _FullDialogWidgetState extends State<FullDialogWidget> {
   @override
-  void dispose() {
-    widget.onDispose;
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;

@@ -1,7 +1,5 @@
-import '../../../../cars/domain/models/car_model.dart';
-import '../../../../items/domain/models/item_model.dart';
+import 'package:mechanic_app/app/modules/registration/services/domain/models/service_model.dart';
 
 abstract interface class IServicesSaveService {
-  Future<void> call(String name, String description, int hoursAmount,
-      List<ItemModel> items, Map<CarModel, double> pricePerCar);
+  Future<ServiceModel> call(ServiceModel service);
 }

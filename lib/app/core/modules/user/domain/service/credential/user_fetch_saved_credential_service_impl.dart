@@ -1,8 +1,5 @@
-
-import 'package:mechanic_app/app/core/exceptions/repository_exception.dart';
-
-import '../../../infra/repository/credential/i_user_credential_repository.dart';
 import '../../models/user_model.dart';
+import '../../repositories/i_user_credential_repository.dart';
 import 'i_user_fetch_saved_credential_service.dart';
 
 class UserFetchSavedCredentialServiceImpl
@@ -15,11 +12,7 @@ class UserFetchSavedCredentialServiceImpl
 
   @override
   Future<UserModel?> call(String key) async {
-    try {
-      final response = await _repository.get(key);
-      return response;
-    } catch (e) {
-      throw RepositoryException(message: e.toString());
-    }
+    final response = await _repository.get(key);
+    return response;
   }
 }

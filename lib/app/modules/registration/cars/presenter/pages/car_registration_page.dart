@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mechanic_app/app/core/ui/alerts/alerts.dart';
+import 'package:mechanic_app/app/core/ui/base_state_page.dart/base_state_page.dart';
+import 'package:mechanic_app/app/modules/registration/cars/domain/dtos/car_save_dto.dart';
 import 'package:mechanic_app/app/modules/registration/cars/domain/models/car_model.dart';
+import 'package:mechanic_app/app/modules/registration/cars/domain/validations/car_save_validator.dart';
 import 'package:mechanic_app/app/modules/registration/cars/presenter/controllers/car_registration_controller.dart';
 
 import '../../../../../core/state/base_state.dart';
@@ -12,24 +15,23 @@ import '../../../../../core/ui/components/full_dialog_widget.dart';
 import '../../../../../core/ui/components/registration_card_widget.dart';
 
 class CarRegistrationPage extends StatefulWidget {
-  const CarRegistrationPage({super.key, required this.controller});
-
-  final CarRegistrationController controller;
+  const CarRegistrationPage({super.key});
 
   @override
   State<CarRegistrationPage> createState() => _CarRegistrationPageState();
 }
 
-class _CarRegistrationPageState extends State<CarRegistrationPage> {
-  CarRegistrationController get controller => widget.controller;
+class _CarRegistrationPageState
+    extends BaseStatePage<CarRegistrationPage, CarRegistrationController> {
+  final carSaveValidator = CarSaveValidator();
+  final carSaveDto = CarSaveDto();
 
   @override
-  void initState() {
-    controller.addListener(listener);
+  void onReady() {
     controller.getCars();
-    super.initState();
   }
 
+  @override
   void listener() {
     return switch (controller.state) {
       SuccessState() =>
@@ -55,6 +57,7 @@ class _CarRegistrationPageState extends State<CarRegistrationPage> {
               showDialog(
                   context: context,
                   builder: (context) {
+                    final formKey = GlobalKey<FormState>();
                     final modelEC = TextEditingController();
                     final brandEC = TextEditingController();
                     final yearEC = TextEditingController();
@@ -63,11 +66,16 @@ class _CarRegistrationPageState extends State<CarRegistrationPage> {
                       onConfirmText: 'Salvar',
                       onCancelText: 'Cancelar',
                       onConfirmPressed: () async {
-                        await controller.saveCar(
-                          modelEC.text,
-                          brandEC.text,
-                          int.parse(yearEC.text),
-                        );
+                        formKey.currentState?.validate();
+
+                        final validation =
+                            carSaveValidator.validate(carSaveDto);
+
+                        if (validation.isValid) {
+                          // carSaveController.update(LoadingState());
+                          await controller.saveCar(carSaveDto);
+                          // carSaveController.update(SuccessState(data: []));
+                        }
                       },
                       onDispose: () {
                         modelEC.dispose();
@@ -75,20 +83,42 @@ class _CarRegistrationPageState extends State<CarRegistrationPage> {
                         yearEC.dispose();
                       },
                       builder: (context) {
-                        return Column(
-                          children: [
-                            CustomTextFormField(
-                                label: 'Modelo', controller: modelEC),
-                            CustomTextFormField(
-                                label: 'Marca', controller: brandEC),
-                            CustomTextFormField(
-                              label: 'Ano',
-                              controller: yearEC,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                            ),
-                          ],
+                        return Form(
+                          key: formKey,
+                          child: Column(
+                            children: [
+                              CustomTextFormField(
+                                label: 'Modelo',
+                                controller: modelEC,
+                                onChanged: carSaveDto.setModel,
+                                validator: carSaveValidator.byField(
+                                  carSaveDto,
+                                  'model',
+                                ),
+                              ),
+                              CustomTextFormField(
+                                label: 'Marca',
+                                controller: brandEC,
+                                onChanged: carSaveDto.setBrand,
+                                validator: carSaveValidator.byField(
+                                  carSaveDto,
+                                  'brand',
+                                ),
+                              ),
+                              CustomTextFormField(
+                                label: 'Ano',
+                                controller: yearEC,
+                                onChanged: carSaveDto.setYear,
+                                validator: carSaveValidator.byField(
+                                  carSaveDto,
+                                  'year',
+                                ),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                              ),
+                            ],
+                          ),
                         );
                       },
                     );
@@ -142,12 +172,14 @@ class _CarRegistrationPageState extends State<CarRegistrationPage> {
                                     onConfirmText: 'Atualizar',
                                     onCancelText: 'Cancelar',
                                     onConfirmPressed: () {
-                                      controller.updateCar(
-                                        modelEC.text,
-                                        brandEC.text,
-                                        yearEC.text,
-                                        car.id,
+                                      final updatedCar = CarModel(
+                                        id: car.id,
+                                        model: modelEC.text,
+                                        brand: brandEC.text,
+                                        year: int.parse(yearEC.text),
                                       );
+
+                                      controller.updateCar(updatedCar);
                                       Navigator.of(context).pop();
                                     },
                                     onDispose: () {

@@ -1,4 +1,6 @@
-import '../../../infra/repositories/i_customer_repository.dart';
+import 'package:mechanic_app/app/modules/registration/customers/domain/models/customer_model.dart';
+
+import '../../repositories/i_customer_repository.dart';
 import 'i_customer_save_service.dart';
 
 class CustomerSaveServiceImpl implements ICustomerSaveService {
@@ -8,6 +10,6 @@ class CustomerSaveServiceImpl implements ICustomerSaveService {
   final ICostumerRepository _repository;
 
   @override
-  Future<void> call(String name, String emailAddress, String phone) async =>
-      await _repository.save(name, emailAddress, phone);
+  Future<CustomerModel> call(CustomerModel customer) async =>
+      _repository.save(customer);
 }

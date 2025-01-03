@@ -18,12 +18,12 @@ List<ServiceOrderModel> generateServiceOrders(int quantity) {
       ServiceOrderModel(
         startedDate: DateTime.now(),
         conclusionDate: DateTime.now().add(const Duration(days: 5)),
-        additionalServices: [],
+        additionalServices: {},
         clientName: 'Cliente $i',
         car: car,
         date: DateTime.now().subtract(Duration(days: i)),
-        services: [],
-        additionalItems: [],
+        services: {},
+        additionalItems: {},
         additionalHours: 0,
         observations: 'Observações da ordem de serviço $i',
         status: DocumentStatus.approved,
@@ -65,16 +65,16 @@ CarModel generateRandomCar() {
 
 List<ItemModel> generateItems() {
   final newItems = [
-    ItemModel(code: 1, description: 'Item 1', cost: 10.0),
-    ItemModel(code: 2, description: 'Item 2', cost: 20.0),
-    ItemModel(code: 3, description: 'Item 3', cost: 20.0),
-    ItemModel(code: 12, description: 'Item 12', cost: 20.0),
-    ItemModel(code: 23, description: 'Item 23', cost: 20.0),
-    ItemModel(code: 1, description: 'Item 1', cost: 10.0),
-    ItemModel(code: 2, description: 'Item 2', cost: 20.0),
-    ItemModel(code: 3, description: 'Item 3', cost: 20.0),
-    ItemModel(code: 12, description: 'Item 12', cost: 20.0),
-    ItemModel(code: 23, description: 'Item 23', cost: 20.0),
+    ItemModel(id: 0, code: 1, description: 'Item 1', cost: 10.0),
+    // ItemModel(code: 2, description: 'Item 2', cost: 20.0),
+    // ItemModel(code: 3, description: 'Item 3', cost: 20.0),
+    // ItemModel(code: 12, description: 'Item 12', cost: 20.0),
+    // ItemModel(code: 23, description: 'Item 23', cost: 20.0),
+    // ItemModel(code: 1, description: 'Item 1', cost: 10.0),
+    // ItemModel(code: 2, description: 'Item 2', cost: 20.0),
+    // ItemModel(code: 3, description: 'Item 3', cost: 20.0),
+    // ItemModel(code: 12, description: 'Item 12', cost: 20.0),
+    // ItemModel(code: 23, description: 'Item 23', cost: 20.0),
   ];
 
   return newItems;
@@ -97,38 +97,8 @@ List<BudgetModel> generateBudgetsList(int count) {
           year: 2000 + random.nextInt(23), // Year between 2000 and 2023
         ),
         date: DateTime.now().subtract(Duration(days: random.nextInt(365))),
-        services: List<ServiceModel>.generate(
-          3,
-          (index) => ServiceModel(
-            id: index,
-            name: 'Service $index',
-            description: 'Description of Service $index',
-            hoursAmount: random.nextInt(10),
-            items: List<ItemModel>.generate(
-              2,
-              (index) => ItemModel(
-                code: index,
-                description: 'Item $index',
-                cost: random.nextDouble() * 50,
-              ),
-            ),
-            pricePerCar: {
-              CarModel(
-                  id: i,
-                  model: 'Model $i',
-                  brand: 'Brand $i',
-                  year: 2000 + random.nextInt(23)): random.nextDouble() * 100,
-            },
-          ),
-        ),
-        additionalItems: List<ItemModel>.generate(
-          2,
-          (index) => ItemModel(
-            code: index,
-            description: 'Additional Item $index',
-            cost: random.nextDouble() * 50,
-          ),
-        ),
+        services: {},
+        additionalItems: {},
         additionalHours: random.nextDouble().toInt() * 10,
         observations: 'Observation $i',
         // status: DocumentStatus.approved,
@@ -145,22 +115,24 @@ List<ServiceModel> createServiceModels({required int count}) {
       id: index,
       name: 'Serviço $index',
       description: 'Descrição do serviço $index...',
-      hoursAmount: 2 + index, // Ajuste conforme necessário
-      items: [
-        ItemModel(
-          code: index,
-          description: 'Peça de Reposição $index',
-          cost: 50.0 + index * 10, // Ajuste conforme necessário
-        ),
-      ],
-      pricePerCar: {
-        CarModel(
-          id: index,
-          model: 'Modelo $index',
-          brand: 'Marca $index',
-          year: 2021 + index,
-        ): 200.0 + index * 20, // Ajuste conforme necessário
-      },
+      items: {},
+      // items: [
+      //   ItemModel(
+      //     id: 0,
+      //     code: index,
+      //     description: 'Peça de Reposição $index',
+      //     cost: 50.0 + index * 10, // Ajuste conforme necessário
+      //   ),
+      // ],
+      // pricePerCar: {
+      //   CarModel(
+      //     id: index,
+      //     model: 'Modelo $index',
+      //     brand: 'Marca $index',
+      //     year: 2021 + index,
+      //   ): 200.0 + index * 20, // Ajuste conforme necessário
+      // },
+      // hoursPerCar: {},
     );
   });
 }

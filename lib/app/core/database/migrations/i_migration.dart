@@ -1,6 +1,6 @@
-import 'package:sqflite/sqflite.dart';
+// import 'package:sqflite/sqflite.dart';
 
-abstract interface class IMigration {
-  void create(Batch batch);
-  void update(Batch update);
-}
+// abstract interface class IMigration {
+//   void create(Batch batch);
+//   void update(Batch update);
+// }

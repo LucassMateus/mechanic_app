@@ -4,8 +4,10 @@ import 'package:mechanic_app/app/core/modules/register/presenter/controllers/reg
 import 'package:mechanic_app/app/core/modules/register/presenter/pages/register_page.dart';
 import 'package:mechanic_app/app/core/modules/user/domain/service/register/i_user_register_service.dart';
 import 'package:mechanic_app/app/core/modules/user/domain/service/register/user_register_data_base_service_impl.dart';
-import 'package:mechanic_app/app/core/modules/user/infra/repository/i_user_repository.dart';
-import 'package:mechanic_app/app/core/modules/user/infra/repository/user_data_base_repository_impl.dart';
+import 'package:mechanic_app/app/core/modules/user/infra/repository/user_repository_impl.dart';
+
+import '../user/domain/repositories/i_user_repository.dart';
+import '../user/infra/data_source/user_data_base_dao.dart';
 
 class RegisterModule extends Module {
   @override
@@ -13,11 +15,10 @@ class RegisterModule extends Module {
 
   @override
   void binds(Injector i) {
-    i.add<IUserRepository>(UserDataBaseRepositoryImpl.new);
+    i.add<UserDataBaseDao>(UserDataBaseDao.new);
+    i.add<IUserRepository>(UserRepositoryImpl.new);
     i.add<IUserRegisterService>(UserRegisterDataBaseServiceImpl.new);
-    i.addLazySingleton(
-      () => RegisterController(registerService: i.get<IUserRegisterService>()),
-    );
+    i.addLazySingleton(RegisterController.new);
     super.binds(i);
   }
 

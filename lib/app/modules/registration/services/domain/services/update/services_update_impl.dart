@@ -1,5 +1,5 @@
 import 'package:mechanic_app/app/modules/registration/services/domain/models/service_model.dart';
-import 'package:mechanic_app/app/modules/registration/services/infra/repositories/i_services_repository.dart';
+import 'package:mechanic_app/app/modules/registration/services/domain/repositories/i_services_repository.dart';
 
 import 'i_services_update_service.dart';
 

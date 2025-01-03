@@ -22,11 +22,25 @@ class ServiceOrderModel extends DocumentService {
 
   final DateTime startedDate;
   final DateTime conclusionDate;
-  final List<ServiceModel> additionalServices;
+  final Set<ServiceModel> additionalServices;
 
   @override
-  double getValor() {
-    throw UnimplementedError();
+  double getValue() {
+    double value = 0;
+    final services = [...this.services, ...additionalServices];
+
+    for (final service in services) {
+      value += service.items.fold(
+        0,
+        (previousValue, element) => previousValue + element.getValue(),
+      );
+    }
+
+    for (final item in additionalItems) {
+      value += item.getValue();
+    }
+
+    return value;
   }
 
   Map<String, dynamic> toMap() {
@@ -50,16 +64,16 @@ class ServiceOrderModel extends DocumentService {
       startedDate: DateTime.fromMillisecondsSinceEpoch(map['startedDate']),
       conclusionDate:
           DateTime.fromMillisecondsSinceEpoch(map['conclusionDate']),
-      additionalServices: List<ServiceModel>.from(
+      additionalServices: Set<ServiceModel>.from(
           map['additionalServices']?.map((x) => ServiceModel.fromMap(x)) ??
               const []),
       clientName: map['clientName'],
       car: CarModel.fromMap(map['car']),
       date: DateTime.fromMillisecondsSinceEpoch(map['date']),
-      services: List<ServiceModel>.from(
+      services: Set<ServiceModel>.from(
         map['services']?.map((x) => ServiceModel.fromMap(x)) ?? const [],
       ),
-      additionalItems: List<ItemModel>.from(
+      additionalItems: Set<ItemModel>.from(
         map['additionalItems']?.map((x) => ItemModel.fromMap(x)) ?? const [],
       ),
       additionalHours: map['additionalHours'],

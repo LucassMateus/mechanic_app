@@ -1,5 +1,5 @@
-import 'package:mechanic_app/app/modules/registration/cars/infra/repositories/i_car_repository.dart';
-
+import '../../models/car_model.dart';
+import '../../repositories/i_car_repository.dart';
 import 'i_car_remove_service.dart';
 
 class CarRemoveServiceImpl implements ICarRemoveService {
@@ -9,5 +9,5 @@ class CarRemoveServiceImpl implements ICarRemoveService {
   final ICarRepository _repository;
 
   @override
-  Future<void> call(int id) async => await _repository.remove(id);
+  Future<void> call(CarModel car) async => await _repository.remove(car);
 }

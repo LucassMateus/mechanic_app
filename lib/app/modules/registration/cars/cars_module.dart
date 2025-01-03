@@ -8,10 +8,12 @@ import 'package:mechanic_app/app/modules/registration/cars/domain/services/save/
 import 'package:mechanic_app/app/modules/registration/cars/domain/services/save/i_car_save_service.dart';
 import 'package:mechanic_app/app/modules/registration/cars/domain/services/update/car_update_impl.dart';
 import 'package:mechanic_app/app/modules/registration/cars/domain/services/update/i_car_update_service.dart';
-import 'package:mechanic_app/app/modules/registration/cars/infra/repositories/car_data_base_repository_impl.dart';
-import 'package:mechanic_app/app/modules/registration/cars/infra/repositories/i_car_repository.dart';
+import 'package:mechanic_app/app/modules/registration/cars/external/data_sources/car_local_dao.dart';
+import 'package:mechanic_app/app/modules/registration/cars/infra/repositories/car_repository_impl.dart';
 import 'package:mechanic_app/app/modules/registration/cars/presenter/controllers/car_registration_controller.dart';
 import 'package:mechanic_app/app/modules/registration/cars/presenter/pages/car_registration_page.dart';
+
+import 'domain/repositories/i_car_repository.dart';
 
 class CarsModule extends Module {
   @override
@@ -19,11 +21,12 @@ class CarsModule extends Module {
 
   @override
   void binds(Injector i) {
-    i.addSingleton<ICarRepository>(CarDataBaseRepositoryImpl.new);
-    i.addSingleton<ICarGetService>(CarGetServiceImpl.new);
-    i.addSingleton<ICarSaveService>(CarSaveServiceImpl.new);
-    i.addSingleton<ICarRemoveService>(CarRemoveServiceImpl.new);
-    i.addSingleton<ICarUpdateService>(CarUpdateServiceImpl.new);
+    i.addLazySingleton<CarsLocalDAO>(CarsLocalDAO.new);
+    i.addLazySingleton<ICarRepository>(CarRepositoryImpl.new);
+    i.addLazySingleton<ICarGetService>(CarGetServiceImpl.new);
+    i.addLazySingleton<ICarSaveService>(CarSaveServiceImpl.new);
+    i.addLazySingleton<ICarRemoveService>(CarRemoveServiceImpl.new);
+    i.addLazySingleton<ICarUpdateService>(CarUpdateServiceImpl.new);
     i.add(CarRegistrationController.new);
 
     super.binds(i);
@@ -31,9 +34,7 @@ class CarsModule extends Module {
 
   @override
   void routes(RouteManager r) {
-    r.child('/',
-        child: (_) => CarRegistrationPage(
-            controller: Modular.get<CarRegistrationController>()));
+    r.child('/', child: (_) => const CarRegistrationPage());
     super.routes(r);
   }
 }

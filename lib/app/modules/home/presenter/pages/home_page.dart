@@ -67,149 +67,155 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: colorScheme.onPrimary,
       ),
       drawer: const CustomDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: Column(
-          children: [
-            Card(
-              // color: colorScheme.surfaceDim,
-              elevation: 3,
-              child: Container(
-                margin: const EdgeInsetsDirectional.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Próximas Ordens de Serviço',
-                      style: TextStyle(color: colorScheme.onSurface),
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      height: 360,
-                      child: ValueListenableBuilder(
-                        valueListenable: controller,
-                        builder: (_, state, child) {
-                          return switch (state) {
-                            SuccessState(:final List<ServiceOrderModel> data) =>
-                              ListView.builder(
-                                itemCount: data.length,
-                                itemBuilder: (context, index) {
-                                  final orderService = data[index];
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          child: Column(
+            children: [
+              Card(
+                // color: colorScheme.surfaceDim,
+                elevation: 3,
+                child: Container(
+                  margin: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Próximas Ordens de Serviço',
+                        style: TextStyle(color: colorScheme.onSurface),
+                      ),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        height: 360,
+                        child: ValueListenableBuilder(
+                          valueListenable: controller,
+                          builder: (_, state, child) {
+                            return switch (state) {
+                              SuccessState(
+                                :final List<ServiceOrderModel> data
+                              ) =>
+                                ListView.builder(
+                                  itemCount: data.length,
+                                  itemBuilder: (context, index) {
+                                    final orderService = data[index];
 
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 0,
-                                      vertical: 2,
-                                    ),
-                                    child: OutlinedButton(
-                                      style: TextButton.styleFrom(
-                                        minimumSize: Size(size.width, 64),
-                                        backgroundColor:
-                                            colorScheme.onInverseSurface,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 0,
+                                        vertical: 2,
+                                      ),
+                                      child: OutlinedButton(
+                                        style: TextButton.styleFrom(
+                                          minimumSize: Size(size.width, 64),
+                                          backgroundColor:
+                                              colorScheme.onInverseSurface,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                          ),
+                                        ),
+                                        onPressed: () {},
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Carro ${orderService.car.model}',
+                                                  style: TextStyle(
+                                                      color: colorScheme
+                                                          .onSurface),
+                                                ),
+                                                Text(
+                                                  'Cliente ${orderService.clientName}',
+                                                  style: TextStyle(
+                                                      color:
+                                                          colorScheme.outline),
+                                                )
+                                              ],
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  'Data: ${Helpers.formatDate(orderService.startedDate)}',
+                                                  style: TextStyle(
+                                                      color: colorScheme
+                                                          .onSurface),
+                                                ),
+                                                Text(
+                                                  'Horas previstas: 1$index',
+                                                  style: TextStyle(
+                                                      color:
+                                                          colorScheme.outline),
+                                                )
+                                              ],
+                                            )
+                                          ],
                                         ),
                                       ),
-                                      onPressed: () {},
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Carro ${orderService.car.model}',
-                                                style: TextStyle(
-                                                    color:
-                                                        colorScheme.onSurface),
-                                              ),
-                                              Text(
-                                                'Cliente ${orderService.clientName}',
-                                                style: TextStyle(
-                                                    color: colorScheme.outline),
-                                              )
-                                            ],
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                'Data: ${Helpers.formatDate(orderService.startedDate)}',
-                                                style: TextStyle(
-                                                    color:
-                                                        colorScheme.onSurface),
-                                              ),
-                                              Text(
-                                                'Horas previstas: 1$index',
-                                                style: TextStyle(
-                                                    color: colorScheme.outline),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ErrorState(:final Exception exception) => Center(
-                                child: Text(exception.toString()),
-                              ),
-                            _ => const Center(
-                                child: CircularProgressIndicator.adaptive(),
-                              ),
-                          };
-                        },
+                                    );
+                                  },
+                                ),
+                              ErrorState(:final Exception exception) => Center(
+                                  child: Text(exception.toString()),
+                                ),
+                              _ => const Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                ),
+                            };
+                          },
+                        ),
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: TextButton(
-                        onPressed: () =>
-                            Modular.to.pushNamed('/service-orders'),
-                        child: const Text('Ver Mais'),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: TextButton(
+                          onPressed: () =>
+                              Modular.to.pushNamed('/service-orders'),
+                          child: const Text('Ver Mais'),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                minimumSize: Size(size.width, 80),
-                elevation: 3,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                // backgroundColor: colorScheme.surfaceDim,
-              ),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => BudgetDialog(
-                    controller: dialogController,
-                    title: 'Novo Orçamento',
-                    onConfirmText: 'Salvar',
-                    onCancelText: 'Cancelar',
+                    ],
                   ),
-                );
-              },
-              child: Text(
-                'Novo Orçamento',
-                style: TextStyle(color: colorScheme.onSurface),
+                ),
               ),
-            )
-          ],
+              const SizedBox(
+                height: 16,
+              ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  minimumSize: Size(size.width, 80),
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  // backgroundColor: colorScheme.surfaceDim,
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => BudgetDialog(
+                      controller: dialogController,
+                      title: 'Novo Orçamento',
+                      onConfirmText: 'Salvar',
+                      onCancelText: 'Cancelar',
+                    ),
+                  );
+                },
+                child: Text(
+                  'Novo Orçamento',
+                  style: TextStyle(color: colorScheme.onSurface),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
